@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "467805408143",
+    "project_id": "bioface-loginregister-85db3",
+    "storage_bucket": "bioface-loginregister-85db3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467805408143:android:8dcaae6179ae601cb2d9fa",
+        "android_client_info": {
+          "package_name": "com.bangkit.bioface"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBf6Uv4dcqPsuP4_fNO-OaQa7Zz3Fij7yU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
