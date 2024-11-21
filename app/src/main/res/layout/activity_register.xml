@@ -99,10 +99,23 @@
         android:layout_marginTop="20dp">
 
         <EditText
+            android:id="@+id/r_edt_name"
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:hint="Enter your name"
+            android:background="@drawable/button_shape2"
+            android:textSize="15sp"
+            android:fontFamily="@font/poppinsregular"
+            android:paddingStart="20dp"
+            android:inputType="textEmailAddress"/>
+
+
+        <EditText
             android:id="@+id/r_edt_email"
             android:layout_width="match_parent"
             android:layout_height="57dp"
             android:hint="Enter your email"
+            android:layout_marginTop="10dp"
             android:background="@drawable/button_shape2"
             android:textSize="15sp"
             android:fontFamily="@font/poppinsregular"

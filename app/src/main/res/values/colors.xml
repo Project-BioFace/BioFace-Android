@@ -6,5 +6,7 @@
 
     <color name="pink">#FF5C8D</color>
     <color name="pinkprimary">#E90074</color>
-    <color name="pinksecondary">#FF4191</color>
+    <color name="pinksecondary">#FF4190</color>
+
+    <color name="trypink1">#EAACCB</color>
 </resources>
