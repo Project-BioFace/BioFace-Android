@@ -10,9 +10,8 @@ import com.bangkit.bioface.main.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import papaya.`in`.sendmail.SendMail
 import kotlin.random.Random
-import kotlin.random.nextInt
 import android.os.CountDownTimer
-
+import kotlin.random.nextInt
 
 class OtpActivity : AppCompatActivity() {
 
@@ -46,17 +45,8 @@ class OtpActivity : AppCompatActivity() {
             finish() // Close the activity
         }
 
-//        // Resend OTP with cooldown
-//        binding.txtResendOtp.setOnClickListener {
-//            binding.txtResendOtp.isEnabled = false
-//            generateAndSendOtp()
-//            Toast.makeText(this, "OTP Resent", Toast.LENGTH_SHORT).show()
-//
-//            // Enable resend button after 30 seconds
-//            binding.txtResendOtp.postDelayed({
-//                binding.txtResendOtp.isEnabled = true
-//            }, 30000) // 30 seconds cooldown
-//        }
+        // Setup Resend OTP button
+        setupResendOtpButton()
 
         // Handle OTP input navigation
         setupOtpInputNavigation()
@@ -67,13 +57,28 @@ class OtpActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupResendOtpButton(){
-        binding.txtResendOtp.setOnClickListener{
-            generateAndSendOtp()
-            Toast.makeText()
+    private fun setupResendOtpButton() {
+        binding.txtResendOtp.setOnClickListener {
+            generateAndSendOtp() // Generate and send OTP again
+            Toast.makeText(this, "OTP Sent", Toast.LENGTH_SHORT).show()
+            startResendOtpCountdown() // Start countdown timer
         }
     }
 
+    private fun startResendOtpCountdown() {
+        binding.txtResendOtp.isEnabled = false // Disable button during countdown
+        object : CountDownTimer(30000, 1000) { // 30 seconds timer with 1-second intervals
+            override fun onTick(millisUntilFinished: Long) {
+                val secondsRemaining = millisUntilFinished / 1000
+                binding.txtResendOtp.text = "Resend in $secondsRemaining sec"
+            }
+
+            override fun onFinish() {
+                binding.txtResendOtp.isEnabled = true // Enable button after countdown
+                binding.txtResendOtp.text = "Resend OTP" // Reset button text
+            }
+        }.start()
+    }
 
     private fun generateAndSendOtp() {
         // Generate a new random OTP
@@ -118,7 +123,7 @@ class OtpActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show()
 
-                        // Navigate to HomeScreen
+                        // Navigate to MainActivity
                         val intent = Intent(this@OtpActivity, MainActivity::class.java)
                         startActivity(intent)
                         finish()

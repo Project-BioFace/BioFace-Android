@@ -23,11 +23,6 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        // Mengatur tombol kembali ke MainActivity
-        binding.lBtnBack.setOnClickListener {
-            // Menyelesaikan aktivitas saat ini dan kembali ke MainActivity
-            finish()
-        }
 
         // Mengatur klik pada txt_register untuk membuka RegisterActivity
         binding.txtRegister.setOnClickListener {
