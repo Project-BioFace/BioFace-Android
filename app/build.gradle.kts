@@ -67,4 +67,6 @@ dependencies {
 
     implementation("com.github.Foysalofficial:NafisBottomNav:5.0")
 
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+
 }

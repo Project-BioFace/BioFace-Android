@@ -3,6 +3,7 @@ package com.bangkit.bioface.main
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.bangkit.bioface.ProfileFragment
 import com.nafis.bottomnavigation.NafisBottomNavigation
 import com.bangkit.bioface.R
 import com.bangkit.bioface.main.fitur.*
@@ -64,20 +65,20 @@ class MainActivity : AppCompatActivity() {
         when (currentFragment) {
             is HomeFragment -> super.onBackPressed() // Tutup aplikasi jika di HomeFragment
             is NewsFragment -> {
-                bottomNavigation.show(ID_SCAN)
-                loadFragment(ScanFragment())
+                bottomNavigation.show(ID_HOME)
+                loadFragment(HomeFragment())
             }
             is ScanFragment -> {
-                bottomNavigation.show(ID_DICTIONARY)
-                loadFragment(DictionaryFragment())
+                bottomNavigation.show(ID_HOME)
+                loadFragment(HomeFragment())
             }
-            is HistoryFragment -> {
+            is DictionaryFragment -> {
                 bottomNavigation.show(ID_HOME)
                 loadFragment(HomeFragment())
             }
             is ProfileFragment -> {
-                bottomNavigation.show(ID_NEWS)
-                loadFragment(NewsFragment())
+                bottomNavigation.show(ID_HOME)
+                loadFragment(HomeFragment())
             }
             else -> super.onBackPressed()
         }
