@@ -1,4 +1,4 @@
-package com.bangkit.bioface
+package com.bangkit.bioface.main.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,11 +6,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import com.bangkit.bioface.databinding.ActivityOtpBinding
-import com.bangkit.bioface.main.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import papaya.`in`.sendmail.SendMail
 import kotlin.random.Random
 import android.os.CountDownTimer
+import com.bangkit.bioface.main.LandingActivity
 import kotlin.random.nextInt
 
 class OtpActivity : AppCompatActivity() {
@@ -40,10 +40,6 @@ class OtpActivity : AppCompatActivity() {
         // Generate and send OTP
         generateAndSendOtp()
 
-        // Handle back button click
-        binding.otpBtnBack.setOnClickListener {
-            finish() // Close the activity
-        }
 
         // Setup Resend OTP button
         setupResendOtpButton()
@@ -55,6 +51,7 @@ class OtpActivity : AppCompatActivity() {
         binding.buttonSubmitOtp.setOnClickListener {
             validateAndSubmitOtp()
         }
+
     }
 
     private fun setupResendOtpButton() {
@@ -118,21 +115,13 @@ class OtpActivity : AppCompatActivity() {
             otp.length < 6 -> Toast.makeText(this, "Please enter the complete OTP", Toast.LENGTH_SHORT).show()
             otp != randomOtp.toString() -> Toast.makeText(this, "Invalid OTP", Toast.LENGTH_SHORT).show()
             else -> {
-                // Register user with Firebase Authentication
-                auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show()
-
-                        // Navigate to MainActivity
-                        val intent = Intent(this@OtpActivity, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        // Handle registration failure
-                        Toast.makeText(this, "Registration Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                    }
-                }
+                // Registration is already done, proceed to MainActivity
+                Toast.makeText(this, "OTP Verified Successfully!", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@OtpActivity, LandingActivity::class.java)
+                startActivity(intent)
+                finish()
             }
         }
     }
+
 }

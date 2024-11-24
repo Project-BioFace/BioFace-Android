@@ -5,67 +5,31 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".main.MainActivity">
 
-    <ImageView
-        android:id="@+id/ic_logo"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="130dp"
-        android:src="@drawable/ic_bio1" />
+    <!-- TextView for selected page -->
 
-    <TextView
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomNavigation" />
+
+    <com.nafis.bottomnavigation.NafisBottomNavigation
+        android:id="@+id/bottomNavigation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ic_logo"
-        android:layout_centerHorizontal="true"
-        android:text="BioFace"
-        android:fontFamily="@font/mhiora"
-        android:textStyle="bold"
-        android:textSize="50sp"
-        android:textColor="@color/pinksecondary"
-        android:id="@+id/title"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
-        android:layout_centerHorizontal="true"
-        android:text="Herbal Solutions for Healthy Skin"
-        android:fontFamily="@font/poppinssemibold"
-        android:layout_marginTop="-10sp"
-        android:textColor="@color/pinksecondary"
-        android:id="@+id/subtitle"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/subtitle"
-        android:layout_centerHorizontal="true"
-        android:width="280dp"
-        android:layout_marginTop="180dp"
-        android:background="@drawable/button_shape"
-        android:textSize="17sp"
-        android:id="@+id/btn_login1"
-        android:textColor="@color/white"
-        android:fontFamily="@font/poppinsbold"
-        android:text="Login"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_login1"
-        android:width="280dp"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/white"
-        android:layout_marginTop="10dp"
-        android:textSize="17sp"
-        android:text="Sign Up"
-        android:background="@drawable/button_shape"
-        android:fontFamily="@font/poppinsbold"
-        android:id="@+id/btn_regis1"/>
-
+        android:layout_alignParentBottom="true"
+        app:mbn_circleColor="#ffffff"
+        app:mbn_backgroundBottomColor="#ffffff"
+        app:mbn_countBackgroundColor="#ff6f00"
+        app:mbn_countTextColor="#ffffff"
+        app:mbn_countTypeface="fonts/SourceSansPro-Regular.ttf"
+        app:mbn_defaultIconColor="#90a4ae"
+        app:mbn_rippleColor="#2f424242"
+        app:mbn_selectedIconColor="#3c415e"
+        app:mbn_shadowColor="#1f212121"
+        app:mbn_hasAnimation="true"
+        />
 
 </RelativeLayout>

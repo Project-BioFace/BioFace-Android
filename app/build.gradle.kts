@@ -59,6 +59,12 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-firestore:24.9.0")
 
     implementation("com.github.1902shubh:SendMail:1.0.0")
+
+    implementation ("np.com.susanthapa:curved_bottom_navigation:0.6.5")
+
+    implementation("com.github.Foysalofficial:NafisBottomNav:5.0")
+
 }

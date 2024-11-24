@@ -9,4 +9,11 @@
     <color name="pinksecondary">#FF4190</color>
 
     <color name="trypink1">#EAACCB</color>
+
+    <color name="selected_color">#FF5722</color>
+    <color name="unselected_color">#9E9E9E</color>
+    <color name="fab_background_color">#FFFFFF</color>
+    <color name="navigation_background_color">#F8F8F8</color>
+    <color name="navigation_background">#E90074</color>
+
 </resources>

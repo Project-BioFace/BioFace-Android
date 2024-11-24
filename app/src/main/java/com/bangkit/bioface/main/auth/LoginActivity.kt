@@ -1,4 +1,4 @@
-package com.bangkit.bioface.main
+package com.bangkit.bioface.main.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,8 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bangkit.bioface.databinding.ActivityLoginBinding
+import com.bangkit.bioface.main.MainActivity
+import com.bangkit.bioface.main.fitur.HomeFragment
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
@@ -73,7 +75,7 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener(this){
                 if (it.isSuccessful){
                     Toast.makeText(this, "Welcome to Bioface $email", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, SplashActivity::class.java)
+                    val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                 } else {
                     Toast.makeText(this, "${it.exception?.message}",Toast.LENGTH_SHORT).show()

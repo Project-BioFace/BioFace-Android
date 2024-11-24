@@ -7,41 +7,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".OtpActivity"
+        tools:context=".main.auth.OtpActivity"
         android:background="@color/white"
         >
-
-        <!-- Back Button and Header Text -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:id="@+id/otp_btn_back"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_back"
-                android:contentDescription="Back Button"
-                android:layout_marginEnd="8dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Verify OTP"
-                android:textSize="15sp"
-                android:fontFamily="@font/poppinssemibold"
-                android:textColor="@color/black"
-                />
-        </LinearLayout>
 
         <!-- OTP Illustration -->
         <ImageView
             android:layout_width="250dp"
             android:layout_height="250dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="130dp"
+
             android:layout_gravity="center"
             android:src="@drawable/ic_otp"
             />

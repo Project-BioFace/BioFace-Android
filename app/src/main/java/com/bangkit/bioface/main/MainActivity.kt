@@ -1,32 +1,85 @@
 package com.bangkit.bioface.main
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.bangkit.bioface.databinding.ActivityMainBinding
+import androidx.fragment.app.Fragment
+import com.nafis.bottomnavigation.NafisBottomNavigation
+import com.bangkit.bioface.R
+import com.bangkit.bioface.main.fitur.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    companion object {
+        private const val ID_HOME = 1
+        private const val ID_DICTIONARY = 2
+        private const val ID_SCAN = 3
+        private const val ID_NEWS = 4
+        private const val ID_PROFILE = 5
+    }
+
+    private lateinit var bottomNavigation: NafisBottomNavigation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        supportActionBar?.hide()
+        setContentView(R.layout.activity_main)
 
-        // Inisialisasi View Binding
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        bottomNavigation = findViewById(R.id.bottomNavigation)
 
-        // Menangani klik tombol Login
-        binding.btnLogin1.setOnClickListener {
-            val loginIntent = Intent(this, LoginActivity::class.java)
-            startActivity(loginIntent)
+        // Tampilkan HomeFragment saat pertama kali masuk
+        loadFragment(HomeFragment())
+
+        // Tambahkan item navigasi
+        bottomNavigation.apply {
+            add(NafisBottomNavigation.Model(ID_HOME, R.drawable.ic_home))
+            add(NafisBottomNavigation.Model(ID_DICTIONARY, R.drawable.ic_dictionary))
+            add(NafisBottomNavigation.Model(ID_SCAN, R.drawable.ic_scan))
+            add(NafisBottomNavigation.Model(ID_NEWS, R.drawable.ic_news))
+            add(NafisBottomNavigation.Model(ID_PROFILE, R.drawable.ic_profile))
+
+            setOnClickMenuListener {
+                val selectedFragment = when (it.id) {
+                    ID_HOME -> HomeFragment()
+                    ID_DICTIONARY -> DictionaryFragment()
+                    ID_SCAN -> ScanFragment()
+                    ID_NEWS -> NewsFragment()
+                    ID_PROFILE -> ProfileFragment()
+                    else -> HomeFragment()
+                }
+                loadFragment(selectedFragment)
+            }
+
+            show(ID_HOME) // Tampilkan fragment default di bottom navigation
         }
+    }
 
-        // Menangani klik tombol Register
-        binding.btnRegis1.setOnClickListener {
-            val registerIntent = Intent(this, RegisterActivity::class.java)
-            startActivity(registerIntent)
+    private fun loadFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .addToBackStack(null) // Tambahkan ke back stack agar bisa kembali
+            .commit()
+    }
+
+    override fun onBackPressed() {
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
+        when (currentFragment) {
+            is HomeFragment -> super.onBackPressed() // Tutup aplikasi jika di HomeFragment
+            is NewsFragment -> {
+                bottomNavigation.show(ID_SCAN)
+                loadFragment(ScanFragment())
+            }
+            is ScanFragment -> {
+                bottomNavigation.show(ID_DICTIONARY)
+                loadFragment(DictionaryFragment())
+            }
+            is HistoryFragment -> {
+                bottomNavigation.show(ID_HOME)
+                loadFragment(HomeFragment())
+            }
+            is ProfileFragment -> {
+                bottomNavigation.show(ID_NEWS)
+                loadFragment(NewsFragment())
+            }
+            else -> super.onBackPressed()
         }
     }
 }
