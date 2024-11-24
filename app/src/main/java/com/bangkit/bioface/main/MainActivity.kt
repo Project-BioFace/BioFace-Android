@@ -63,7 +63,10 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
         when (currentFragment) {
-            is HomeFragment -> super.onBackPressed() // Tutup aplikasi jika di HomeFragment
+            is HomeFragment -> {
+                // Tutup aplikasi jika di HomeFragment
+                finishAffinity() // Menutup semua aktivitas dalam task
+            }
             is NewsFragment -> {
                 bottomNavigation.show(ID_HOME)
                 loadFragment(HomeFragment())
@@ -83,4 +86,5 @@ class MainActivity : AppCompatActivity() {
             else -> super.onBackPressed()
         }
     }
+
 }
