@@ -55,6 +55,8 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.storage)
+    implementation(libs.vision.common)
+    implementation(libs.play.services.mlkit.face.detection)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -74,4 +76,19 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.15.0")
     implementation ("androidx.activity:activity-ktx:1.7.2")
     implementation ("com.github.yalantis:ucrop:2.2.8")
+
+    //Glide
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+
+    // CameraX dependencies
+    implementation ("androidx.camera:camera-core:1.4.0")
+    implementation ("androidx.camera:camera-camera2:1.4.0") // Menambahkan kamera2 sebagai implementasi default
+    implementation ("androidx.camera:camera-lifecycle:1.4.0")  // Untuk lifecycle camera
+    implementation ("androidx.camera:camera-view:1.4.0")  // Untuk menggunakan camera view
+
+
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 }
