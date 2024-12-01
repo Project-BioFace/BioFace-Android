@@ -9,10 +9,13 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.bangkit.bioface.R
+import com.bangkit.bioface.main.auth.LoginActivity
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -28,6 +31,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private lateinit var profileEmail: TextView
     private lateinit var profilePicture: CircleImageView
     private lateinit var editIcon: ImageView
+    private lateinit var btnLogout: Button
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,6 +41,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         profileEmail = view.findViewById(R.id.profileEmail)
         profilePicture = view.findViewById(R.id.profilePicture)
         editIcon = view.findViewById(R.id.editIcon)
+        btnLogout = view.findViewById(R.id.btnLogout)
+
+
+        btnLogout.setOnClickListener{
+            logout()
+        }
 
         // Muat data pengguna dan gambar profil
         fetchUserData()
@@ -231,5 +241,21 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             it.flush()
         }
         return Uri.fromFile(file)
+    }
+
+    private fun logout() {
+        // Hapus status login di SharedPreferences
+        val sharedPreferences = activity?.getSharedPreferences("user_prefs", AppCompatActivity.MODE_PRIVATE)
+        val editor = sharedPreferences?.edit()
+        editor?.putBoolean("isLoggedIn", false)  // Set status login menjadi false
+        editor?.apply()
+
+        // Logout dari Firebase Authentication
+        FirebaseAuth.getInstance().signOut()
+
+        // Arahkan pengguna kembali ke halaman login
+        val intent = Intent(activity, LoginActivity::class.java)
+        startActivity(intent)
+        activity?.finish()  // Tutup ProfileActivity agar tidak bisa kembali ke halaman profile
     }
 }
