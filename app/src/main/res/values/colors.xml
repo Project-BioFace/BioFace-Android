@@ -16,4 +16,5 @@
     <color name="navigation_background_color">#F8F8F8</color>
     <color name="navigation_background">#E90074</color>
 
+    <color name="shimmer_placeholder_color">#E0E0E0</color>
 </resources>
