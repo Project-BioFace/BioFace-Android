@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+
 import com.bangkit.bioface.R
 import com.bangkit.bioface.databinding.FragmentHistoryBinding
 import com.bangkit.bioface.main.adapter.HistoryAdapter
@@ -31,8 +31,8 @@ class HistoryFragment : Fragment() {
             // Navigasi ke DetailResultFragment saat item diklik
             navigateToDetailResult(scanResult)
         }
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        //binding.recyclerView.adapter = adapter
+        //binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // Load data dari penyimpanan (jika ada)
         loadHistory()
