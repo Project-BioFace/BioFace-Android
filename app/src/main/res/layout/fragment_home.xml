@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".main.fitur.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -10,5 +11,39 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="Home Fragment" />
+
+    <!-- Search Bar -->
+    <EditText
+        android:id="@+id/et_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/button_shape2"
+        android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="8dp"
+        android:hint="Cari Herbal..."
+        android:padding="12dp"
+        android:layout_marginTop="120dp" />
+
+    <!-- TabLayout -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="184dp"
+        android:background="@color/bone_white"
+        app:tabIndicatorColor="@color/pinkprimary"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/pinkprimary"
+        app:tabTextColor="@color/black" />
+
+    <!-- FrameLayout for Fragments -->
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="232dp" />
+
 
 </FrameLayout>
