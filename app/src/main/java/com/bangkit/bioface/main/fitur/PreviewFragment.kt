@@ -2,7 +2,6 @@ package com.bangkit.bioface.main.fitur
 
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Base64
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +9,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.bangkit.bioface.R
-
 import com.bangkit.bioface.databinding.FragmentPreviewBinding
-import com.bangkit.bioface.main.adapter.ApiClient
-import com.bangkit.bioface.main.adapter.ImageRequest
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
-import java.io.ByteArrayOutputStream
+import kotlinx.coroutines.withContext
 
 class PreviewFragment : Fragment() {
     private lateinit var binding: FragmentPreviewBinding
@@ -52,13 +49,6 @@ class PreviewFragment : Fragment() {
         }
     }
 
-    private fun bitmapToBase64(bitmap: Bitmap): String {
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-        val byteArray = byteArrayOutputStream.toByteArray()
-        return Base64.encodeToString(byteArray, Base64.DEFAULT)
-    }
-
     private fun processImage(image: Bitmap?) {
         if (image != null) {
             // Tampilkan ProgressBar dan TextView
@@ -66,41 +56,30 @@ class PreviewFragment : Fragment() {
             binding.progressText.visibility = View.VISIBLE
             binding.progressText.text = "Memproses gambar..."
 
-            // Konversi gambar ke base64
-            val base64Image = bitmapToBase64(image)
-
-            // Buat permintaan
-            val imageRequest = ImageRequest(base64Image)
-
-            // Kirim permintaan ke API
+            // Simulasi pemrosesan gambar
             lifecycleScope.launch {
-                try {
-                    val response = ApiClient.apiService.uploadImage(imageRequest).execute()
-                    if (response.isSuccessful) {
-                        // Tangani respons yang berhasil
-                        val responseBody = response.body()
-                        // Navigasi ke ResultFragment dengan hasil
-                        navigateToResultFragment(responseBody)
-                    } else {
-                        // Tangani kesalahan
-                        Toast.makeText(requireContext(), "Gagal mengirim gambar: ${response.message()}", Toast.LENGTH_SHORT).show()
+                // Simulasi proses 0-100%
+                for (i in 0..100 step 10) {
+                    withContext(Dispatchers.Main) {
+                        binding.progressText.text = "Memproses... $i%"
                     }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    Toast.makeText(requireContext(), "Terjadi kesalahan: ${e.message}", Toast.LENGTH_SHORT).show()
-                } finally {
-                    // Sembunyikan ProgressBar
-                    binding.progressBar.visibility = View.GONE
-                    binding.progressText.visibility = View.GONE
+                    delay(500) // Simulasi waktu pemrosesan
                 }
+
+                // Panggil model AI untuk memproses gambar
+                // Misalnya, Anda bisa memanggil fungsi dari rekan Anda di sini
+                // Contoh:
+                // val result = aiModel.processImage(image)
+
+                // Setelah pemrosesan selesai, navigasi ke ResultFragment
+                navigateToResultFragment(image) // Ganti dengan hasil pemrosesan
             }
         } else {
             Toast.makeText(requireContext(), "Gambar tidak tersedia untuk diproses", Toast.LENGTH_SHORT).show()
         }
     }
 
-
-    private fun navigateToResultFragment(image: ResponseBody?) {
+    private fun navigateToResultFragment(image: Bitmap?) {
         val resultFragment = ResultFragment.newInstance(image) // Ganti dengan hasil pemrosesan
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, resultFragment) // Ganti dengan ID container yang sesuai

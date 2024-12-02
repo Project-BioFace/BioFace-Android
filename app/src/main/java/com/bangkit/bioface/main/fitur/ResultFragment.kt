@@ -1,14 +1,12 @@
 package com.bangkit.bioface.main.fitur
 
 import android.graphics.Bitmap
-import android.graphics.Matrix
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bangkit.bioface.databinding.FragmentResultBinding
-import okhttp3.ResponseBody
 
 class ResultFragment : Fragment() {
     private lateinit var binding: FragmentResultBinding
@@ -29,7 +27,7 @@ class ResultFragment : Fragment() {
         capturedImage = arguments?.getParcelable(ARG_IMAGE)
 
         // Tampilkan gambar di ImageView
-        binding.resultImageView.setImageBitmap(flipImage(capturedImage))
+        binding.resultImageView.setImageBitmap(capturedImage)
 
         // Tampilkan hasil pemrosesan
         displayResults()
@@ -39,17 +37,6 @@ class ResultFragment : Fragment() {
             // Kembali ke ScanFragment atau aktivitas sebelumnya
             parentFragmentManager.popBackStack() // Kembali ke fragmen sebelumnya
         }
-    }
-
-    private fun flipImage(image: Bitmap?): Bitmap? {
-        if (image == null) return null
-
-        // Membuat matrix untuk membalik gambar secara horizontal
-        val matrix = Matrix()
-        matrix.preScale(-1f, 1f) // Membalik gambar secara horizontal
-
-        // Menggunakan matrix untuk membuat bitmap baru
-        return Bitmap.createBitmap(image, 0, 0, image.width, image.height, matrix, false)
     }
 
     private fun displayResults() {
@@ -65,7 +52,7 @@ class ResultFragment : Fragment() {
     companion object {
         private const val ARG_IMAGE = "arg_image"
 
-        fun newInstance(image: ResponseBody?): ResultFragment {
+        fun newInstance(image: Bitmap?): ResultFragment {
             val fragment = ResultFragment()
             val args = Bundle()
             args.putParcelable(ARG_IMAGE, image)
