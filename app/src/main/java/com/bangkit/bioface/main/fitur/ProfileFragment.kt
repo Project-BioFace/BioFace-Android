@@ -1,7 +1,9 @@
-package com.bangkit.bioface
+package com.bangkit.bioface.main.fitur
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -12,13 +14,16 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.bangkit.bioface.R
-import com.bangkit.bioface.main.auth.LoginActivity
+import com.bangkit.bioface.main.LandingActivity
 import com.bumptech.glide.Glide
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.yalantis.ucrop.UCrop
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.File
@@ -32,26 +37,42 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private lateinit var profilePicture: CircleImageView
     private lateinit var editIcon: ImageView
     private lateinit var btnLogout: Button
+    private lateinit var shimmerNameLayout: ShimmerFrameLayout
+    private lateinit var shimmerEmailLayout: ShimmerFrameLayout
+    private lateinit var shimmerProfilePictureLayout: ShimmerFrameLayout
+
+    companion object {
+        private const val CAMERA_PERMISSION_CODE = 100
+        private const val GALLERY_PERMISSION_CODE = 101
+        private const val GALLERY_REQUEST_CODE = 1000
+        private const val CAMERA_REQUEST_CODE = 1001
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Inisialisasi UI
+        // Initialize UI components
         profileName = view.findViewById(R.id.profileName)
         profileEmail = view.findViewById(R.id.profileEmail)
         profilePicture = view.findViewById(R.id.profilePicture)
         editIcon = view.findViewById(R.id.editIcon)
         btnLogout = view.findViewById(R.id.btnLogout)
 
+        shimmerNameLayout = view.findViewById(R.id.shimmerNameLayout)
+        shimmerEmailLayout = view.findViewById(R.id.shimmerEmailLayout)
+        shimmerProfilePictureLayout = view.findViewById(R.id.shimmerProfilePictureLayout)
 
-        btnLogout.setOnClickListener{
-            logout()
-        }
+        // Show shimmer loading effects initially
+        shimmerNameLayout.startShimmer()
+        shimmerEmailLayout.startShimmer()
+        shimmerProfilePictureLayout.startShimmer()
 
-        // Muat data pengguna dan gambar profil
+        btnLogout.setOnClickListener { logout() }
+
+        // Load user data and profile picture
         fetchUserData()
 
-        // Klik untuk mengganti foto profil
+        // Click to change profile picture
         editIcon.setOnClickListener { showImagePickerOptions() }
     }
 
@@ -67,35 +88,114 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     if (document != null) {
                         val name = document.getString("name")
                         val email = document.getString("email")
-                        val profilePicturePath = document.getString("profilePicturePath")
 
-                        // Tampilkan di UI
+                        // Display the fetched data
                         profileName.text = name ?: "Nama Tidak Ditemukan"
                         profileEmail.text = email ?: "Email Tidak Ditemukan"
 
-                        // Muat gambar profil dari penyimpanan internal
-                        if (!profilePicturePath.isNullOrEmpty()) {
-                            val file = File(profilePicturePath)
-                            if (file.exists()) {
-                                val bitmap = BitmapFactory.decodeFile(file.absolutePath)
-                                profilePicture.setImageBitmap(bitmap)
-                            } else {
-                                Log.e("ProfileFragment", "File gambar tidak ditemukan: $profilePicturePath")
-                            }
-                        }
+                        // Hide shimmer and show the profile content
+                        stopShimmerEffect()
+
+                        // Display profile content
+                        profilePicture.visibility = View.VISIBLE
+                        editIcon.visibility = View.VISIBLE
+                        profileName.visibility = View.VISIBLE
+                        profileEmail.visibility = View.VISIBLE
+
+                        // Load profile picture
+                        loadProfilePicture()
                     } else {
-                        profileName.text = "Dokumen Tidak Ditemukan"
-                        profileEmail.text = "Dokumen Tidak Ditemukan"
+                        handleDataLoadError("Dokumen Tidak Ditemukan")
                     }
                 }
                 .addOnFailureListener { exception ->
-                    profileName.text = "Error: ${exception.message}"
-                    profileEmail.text = "Error: ${exception.message}"
+                    handleDataLoadError("Error: ${exception.message}")
                 }
         } else {
-            profileName.text = "Pengguna Tidak Login"
-            profileEmail.text = "Pengguna Tidak Login"
+            handleDataLoadError("Pengguna Tidak Login")
         }
+    }
+
+    private fun loadProfilePicture() {
+        // Start shimmer effect before loading image
+        shimmerProfilePictureLayout.startShimmer()
+
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            val userId = currentUser.uid
+            val db = FirebaseFirestore.getInstance()
+
+            // Get the user's profile picture URL from Firestore
+            db.collection("users").document(userId)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.contains("profilePictureUrl")) {
+                        val profilePictureUrl = document.getString("profilePictureUrl")
+
+                        // If there is a profile picture URL, load it using Glide
+                        if (!profilePictureUrl.isNullOrEmpty()) {
+                            Glide.with(this)
+                                .load(profilePictureUrl)
+                                .placeholder(R.drawable.ic_pictprofile)
+                                .into(profilePicture)
+
+                            // Stop shimmer after the image has been loaded
+                            shimmerProfilePictureLayout.stopShimmer()
+                            shimmerProfilePictureLayout.visibility = View.GONE
+                            profilePicture.visibility = View.VISIBLE
+                        }
+                    } else {
+                        // Stop shimmer and set default image if no URL in Firestore
+                        shimmerProfilePictureLayout.stopShimmer()
+                        shimmerProfilePictureLayout.visibility = View.GONE
+                        profilePicture.setImageResource(R.drawable.ic_pictprofile)
+                        profilePicture.visibility = View.VISIBLE
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    // Stop shimmer and set default image in case of error
+                    shimmerProfilePictureLayout.stopShimmer()
+                    shimmerProfilePictureLayout.visibility = View.GONE
+                    Log.e("ProfileFragment", "Failed to load profile picture: ${exception.message}")
+                    profilePicture.setImageResource(R.drawable.ic_pictprofile)
+                    profilePicture.visibility = View.VISIBLE
+                }
+        }
+    }
+
+    private fun checkPermission(permission: String, requestCode: Int): Boolean {
+        return if (requireContext().checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
+            true
+        } else {
+            requestPermissions(arrayOf(permission), requestCode)
+            false
+        }
+    }
+
+
+
+
+    private fun stopShimmerEffect() {
+        shimmerNameLayout.stopShimmer()
+        shimmerEmailLayout.stopShimmer()
+        shimmerProfilePictureLayout.stopShimmer()
+        shimmerNameLayout.visibility = View.GONE
+        shimmerEmailLayout.visibility = View.GONE
+        shimmerProfilePictureLayout.visibility = View.GONE
+    }
+
+    private fun handleDataLoadError(message: String) {
+        // Stop shimmer effect
+        stopShimmerEffect()
+
+        // Display error message
+        profileName.text = message
+        profileEmail.text = message
+
+        // Display profile content with error message
+        profilePicture.visibility = View.VISIBLE
+        profileName.visibility = View.VISIBLE
+        profileEmail.visibility = View.VISIBLE
     }
 
     private fun showImagePickerOptions() {
@@ -111,126 +211,109 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         builder.show()
     }
 
+
     private fun openGallery() {
-        val pickImageIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(pickImageIntent, 1000)
+        if (checkPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE, GALLERY_PERMISSION_CODE)) {
+            val pickImageIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(pickImageIntent, GALLERY_REQUEST_CODE)
+        }
+    }
+    private fun openCamera() {
+        if (requireContext().checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE)
+        } else {
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE)
+        }
     }
 
-    private fun openCamera() {
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(cameraIntent, 1001)
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == CAMERA_PERMISSION_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openCamera() // Jika izin diberikan, buka kamera
+            } else {
+                Toast.makeText(requireContext(), "Izin kamera diperlukan untuk mengambil foto", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
+
+
+
 
     private fun startCrop(uri: Uri) {
         val destinationUri = Uri.fromFile(File(requireContext().cacheDir, "cropped_image.jpg"))
         val options = UCrop.Options()
-        options.setCircleDimmedLayer(true) // Membuat crop area melingkar
-        options.setShowCropGrid(false) // Hilangkan grid di crop area
-        options.setHideBottomControls(true) // Sembunyikan kontrol bawah
-        options.setCompressionQuality(90) // Kualitas kompresi gambar
+        options.setCircleDimmedLayer(true)
+        options.setShowCropGrid(false)
+        options.setHideBottomControls(true)
+        options.setCompressionQuality(90)
 
         UCrop.of(uri, destinationUri)
-            .withAspectRatio(1f, 1f) // Aspect ratio 1:1
+            .withAspectRatio(1f, 1f)
             .withOptions(options)
             .start(requireContext(), this)
     }
 
     private fun updateProfilePicture(uri: Uri) {
-        try {
-            val inputStream = requireContext().contentResolver.openInputStream(uri)
-            val bitmap = BitmapFactory.decodeStream(inputStream)
-
-            // Simpan ke penyimpanan internal
-            val savedPath = saveImageToInternalStorage(bitmap)
-
-            if (savedPath != null) {
-                // Simpan path ke Firestore
-                saveProfilePicturePathToFirestore(savedPath)
-
-                // Tampilkan di UI
-                profilePicture.setImageBitmap(bitmap)
-
-                Log.d("ProfileFragment", "Gambar berhasil diperbarui.")
-            } else {
-                Log.e("ProfileFragment", "Gagal menyimpan gambar ke penyimpanan internal.")
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-            Log.e("ProfileFragment", "Error memproses gambar: ${e.message}")
-        }
-    }
-
-    private fun saveImageToInternalStorage(bitmap: Bitmap): String? {
-        val filename = "profile_picture_${System.currentTimeMillis()}.jpg"
-        val file = File(requireContext().filesDir, filename)
-
-        return try {
-            val fos = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
-            fos.close()
-            file.absolutePath
-        } catch (e: IOException) {
-            e.printStackTrace()
-            null
-        }
-    }
-
-    private fun saveProfilePicturePathToFirestore(path: String) {
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        if (currentUser != null) {
+        uploadImageToFirebaseStorage(uri) { downloadUrl ->
+            val currentUser = FirebaseAuth.getInstance().currentUser
             val db = FirebaseFirestore.getInstance()
-            val userId = currentUser.uid
-
-            val updates = mapOf("profilePicturePath" to path)
+            val userId = currentUser?.uid ?: return@uploadImageToFirebaseStorage
 
             db.collection("users").document(userId)
-                .update(updates)
+                .update("profilePictureUrl", downloadUrl)
                 .addOnSuccessListener {
-                    Log.d("ProfileFragment", "Path gambar berhasil disimpan ke Firestore.")
+                    Glide.with(this).load(downloadUrl).into(profilePicture)
+                    Log.d("ProfileFragment", "Gambar profil berhasil diperbarui.")
                 }
-                .addOnFailureListener { exception ->
-                    Log.e("ProfileFragment", "Gagal menyimpan path gambar: ${exception.message}")
+                .addOnFailureListener { e ->
+                    Log.e("ProfileFragment", "Gagal menyimpan URL gambar: ${e.message}")
                 }
         }
+    }
+
+    private fun uploadImageToFirebaseStorage(uri: Uri, onSuccess: (String) -> Unit) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val storageRef = FirebaseStorage.getInstance().reference.child("profile_pictures/$userId.jpg")
+
+        storageRef.putFile(uri)
+            .addOnSuccessListener {
+                storageRef.downloadUrl.addOnSuccessListener { downloadUrl ->
+                    onSuccess(downloadUrl.toString())
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("ProfileFragment", "Gagal mengunggah gambar: ${e.message}")
+            }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && data != null) {
             when (requestCode) {
-                1000 -> { // Galeri
+                1000 -> {
                     val selectedImageUri = data.data
                     if (selectedImageUri != null) {
                         startCrop(selectedImageUri)
-                    } else {
-                        Log.e("ProfileFragment", "Uri dari galeri null")
                     }
                 }
-                1001 -> { // Kamera
+                1001 -> {
                     val bitmap = data.extras?.get("data") as? Bitmap
                     if (bitmap != null) {
                         val uri = saveBitmapToUri(bitmap)
                         if (uri != null) {
                             startCrop(uri)
-                        } else {
-                            Log.e("ProfileFragment", "Gagal menyimpan bitmap dari kamera")
                         }
-                    } else {
-                        Log.e("ProfileFragment", "Bitmap dari kamera null")
                     }
                 }
-                UCrop.REQUEST_CROP -> { // UCrop selesai
+                UCrop.REQUEST_CROP -> {
                     val resultUri = UCrop.getOutput(data)
                     if (resultUri != null) {
                         updateProfilePicture(resultUri)
-                    } else {
-                        Log.e("ProfileFragment", "Hasil cropping null")
                     }
                 }
             }
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-            val cropError = UCrop.getError(data!!)
-            cropError?.printStackTrace()
         }
     }
 
@@ -244,18 +327,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun logout() {
-        // Hapus status login di SharedPreferences
-        val sharedPreferences = activity?.getSharedPreferences("user_prefs", AppCompatActivity.MODE_PRIVATE)
-        val editor = sharedPreferences?.edit()
-        editor?.putBoolean("isLoggedIn", false)  // Set status login menjadi false
-        editor?.apply()
-
-        // Logout dari Firebase Authentication
         FirebaseAuth.getInstance().signOut()
 
-        // Arahkan pengguna kembali ke halaman login
-        val intent = Intent(activity, LoginActivity::class.java)
+        val intent = Intent(activity, LandingActivity::class.java)
         startActivity(intent)
-        activity?.finish()  // Tutup ProfileActivity agar tidak bisa kembali ke halaman profile
+        activity?.finish()
     }
 }

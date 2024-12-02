@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,24 +8,77 @@
     tools:context=".main.fitur.ProfileFragment">
 
     <!-- Header Background -->
-
-    <!-- Profile Picture -->
     <View
         android:id="@+id/headerBackground"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:background="@drawable/profile_bg1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/profile_bg1"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Shimmer Layout for Profile Picture -->
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerProfilePictureLayout"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:visibility="visible"
+        android:layout_marginTop="-53dp"
+        app:layout_constraintTop_toBottomOf="@id/headerBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:background="@drawable/shimmer_profile"
+            />
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <!-- Shimmer Layout for Name -->
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerNameLayout"
+        android:layout_width="250dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="16dp"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/shimmerProfilePictureLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:layout_width="250dp"
+            android:layout_height="24dp"
+            android:background="@color/shimmer_placeholder_color" />
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <!-- Shimmer Layout for Email -->
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerEmailLayout"
+        android:layout_width="250dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="8dp"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/shimmerNameLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:layout_width="250dp"
+            android:layout_height="20dp"
+            android:background="@color/shimmer_placeholder_color" />
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+    <!-- Actual Profile Content -->
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profilePicture"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_marginTop="-53dp"
+        android:layout_marginTop="-50dp"
         android:src="@drawable/ic_pictprofile"
+        android:visibility="invisible"
         app:civ_border_color="@android:color/transparent"
         app:civ_border_width="4dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,7 +86,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/headerBackground" />
 
-    <!-- Edit Icon -->
     <ImageView
         android:id="@+id/editIcon"
         android:layout_width="32dp"
@@ -41,12 +94,12 @@
         android:background="@drawable/bg_circle"
         android:elevation="4dp"
         android:padding="6dp"
+        android:visibility="invisible"
         app:layout_constraintTop_toTopOf="@id/profilePicture"
         app:layout_constraintEnd_toEndOf="@id/profilePicture"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp" />
 
-    <!-- Name -->
     <TextView
         android:id="@+id/profileName"
         android:layout_width="wrap_content"
@@ -54,18 +107,19 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@android:color/black"
+        android:visibility="visible"
         app:layout_constraintTop_toBottomOf="@id/profilePicture"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="0dp" />
 
-    <!-- Email -->
     <TextView
         android:id="@+id/profileEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textColor="@android:color/darker_gray"
+        android:visibility="visible"
         app:layout_constraintTop_toBottomOf="@id/profileName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -116,8 +170,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
-
-
 
     <Button
         android:id="@+id/btnLogout"

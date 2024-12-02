@@ -64,6 +64,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-firestore:24.9.0")
+    implementation ("com.google.android.gms:play-services-auth:20.0.1")
 
     implementation("com.github.1902shubh:SendMail:1.0.0")
 
@@ -76,9 +77,7 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.15.0")
     implementation ("androidx.activity:activity-ktx:1.7.2")
     implementation ("com.github.yalantis:ucrop:2.2.8")
-
-    //Glide
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    implementation ("com.facebook.shimmer:shimmer:0.5.0")
 
     // CameraX dependencies
     implementation ("androidx.camera:camera-core:1.4.0")

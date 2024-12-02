@@ -3,7 +3,7 @@ package com.bangkit.bioface.main
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.bangkit.bioface.ProfileFragment
+import com.bangkit.bioface.main.fitur.ProfileFragment
 import com.nafis.bottomnavigation.NafisBottomNavigation
 import com.bangkit.bioface.R
 import com.bangkit.bioface.main.fitur.*
