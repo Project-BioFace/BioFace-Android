@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
                     ID_HOME -> HomeFragment()
                     ID_DICTIONARY -> DictionaryFragment()
                     ID_SCAN -> ScanFragment()
-                    ID_NEWS -> NewsFragment()
+                    ID_NEWS -> ArticlesFragment()
                     ID_PROFILE -> ProfileFragment()
                     else -> HomeFragment()
                 }
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
                 // Tutup aplikasi jika di HomeFragment
                 finishAffinity() // Menutup semua aktivitas dalam task
             }
-            is NewsFragment -> {
+            is ArticlesFragment -> {
                 bottomNavigation.show(ID_HOME)
                 loadFragment(HomeFragment())
             }

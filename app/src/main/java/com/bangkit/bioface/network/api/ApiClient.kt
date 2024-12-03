@@ -1,11 +1,11 @@
-package com.bangkit.bioface.main.adapter
+package com.bangkit.bioface.network.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
 
-    private const val BASE_URL = "https://sincere-baton-438114-g6.et.r.appspot.com/"
+    private const val BASE_URL = "https://static-subject-442703-s7.et.r.appspot.com/"
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()

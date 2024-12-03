@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bangkit.bioface.R
-import com.bangkit.bioface.main.adapter.ApiClient
+import com.bangkit.bioface.network.api.ApiClient
 import com.bangkit.bioface.main.adapter.HerbalAdapter
 import com.bangkit.bioface.main.adapter.HerbalItem
 import retrofit2.Call
