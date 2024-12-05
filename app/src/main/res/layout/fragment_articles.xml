@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".main.fitur.DictionaryFragment">
+    tools:context=".main.fitur.ArticlesFragment">
 
     <!-- Title -->
     <TextView
@@ -14,10 +14,10 @@
         android:layout_height="wrap_content"
         android:text="BioArticles"
         android:fontFamily="@font/poppinsbold"
-        android:textSize="24sp"
+        android:textSize="35sp"
         android:textColor="@color/black"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="30dp" />
 
     <!-- Subtitle -->
     <TextView
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Explore Skincare Insights and Tips"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:textColor="#7D7D7D"
         android:layout_marginBottom="16dp"
         android:layout_marginStart="16dp"/>
@@ -34,32 +34,26 @@
     <SearchView
         android:id="@+id/searchViewArticles"
         android:layout_width="match_parent"
+        android:layout_gravity="center"
         android:layout_height="wrap_content"
         android:queryHint="Search for articles"
         android:iconifiedByDefault="false"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="16dp"
         android:background="@drawable/bg_searchview"
         android:queryBackground="@android:color/transparent"
         />
 
-    <!-- NestedScrollView for RecyclerView -->
-    <androidx.core.widget.NestedScrollView
+        <!-- RecyclerView for displaying articles -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewArticles"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="false">
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
+        android:scrollbars="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_article" />
 
-        <!-- RecyclerView for displaying articles -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewArticles"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="8dp"
-            android:scrollbars="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_article"/>
-    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

@@ -2,14 +2,19 @@ package com.bangkit.bioface.network.response
 
 import com.google.gson.annotations.SerializedName
 
-data class ResponseArticles(
-
+// Model untuk daftar artikel
+data class ResponseArticlesList(
 	@field:SerializedName("data")
-	val data: List<ArticlesItems?>? = null
+	val data: List<ArticlesItem>? = null // Untuk daftar artikel
+)
+
+// Model untuk detail artikel
+data class ResponseArticleDetail(
+	@field:SerializedName("data")
+	val data: ArticlesItem? = null // Untuk detail artikel
 )
 
 data class ArticlesItem(
-
 	@field:SerializedName("image")
 	val image: String? = null,
 

@@ -27,8 +27,7 @@
             android:text="Article Title"
             android:textSize="20sp"
             android:textColor="@color/black"
-            android:fontFamily="@font/poppinsbold"
-            android:layout_marginBottom="8dp"/>
+            android:fontFamily="@font/poppinsbold" />
 
         <!-- Source -->
         <TextView
@@ -37,20 +36,19 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppinsregular"
             android:text="Source: Example Source"
-            android:textSize="14sp"
-            android:textColor="#7D7D7D"
-            android:layout_marginBottom="16dp"/>
+            android:textSize="12sp"
+            android:textColor="#7D7D7D" />
 
         <!-- Created At -->
         <TextView
             android:id="@+id/articleCreatedAt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Published on: 12/03/2024"
+            android:text="Published on:"
             android:fontFamily="@font/poppinsregular"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textColor="#7D7D7D"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="5dp"/>
 
         <!-- Content -->
         <TextView
@@ -59,10 +57,21 @@
             android:layout_height="wrap_content"
             android:text="This is the article content"
             android:fontFamily="@font/poppinsregular"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="@color/black"
             android:lineSpacingExtra="4dp"/>
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/pinksecondary"
+            android:visibility="gone" />
+
+
     </LinearLayout>
+
+
 
 </androidx.core.widget.NestedScrollView>
