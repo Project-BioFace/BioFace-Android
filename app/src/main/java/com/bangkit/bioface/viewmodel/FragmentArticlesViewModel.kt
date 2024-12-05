@@ -14,7 +14,9 @@ class FragmentArticlesViewModel : ViewModel() {
 
     private val _allArticles = MutableLiveData<List<ArticlesItem>>() // Data asli
     private val _filteredArticles = MutableLiveData<List<ArticlesItem>>() // Data hasil filter
+    private val _errorMessage = MutableLiveData<String>() // Pesan error
     val articles: LiveData<List<ArticlesItem>> = _filteredArticles // Artikel yang ditampilkan
+    val errorMessage: LiveData<String> = _errorMessage // Pesan error
 
     fun getArticles() {
         viewModelScope.launch {
@@ -22,15 +24,17 @@ class FragmentArticlesViewModel : ViewModel() {
                 val response: Response<ResponseArticlesList> = ApiClient.apiService.getArticles()
                 if (response.isSuccessful && response.body() != null) {
                     val articlesList = response.body()?.data ?: emptyList()
-                    _allArticles.value = articlesList
-                    _filteredArticles.value = articlesList
+                    if (articlesList.isEmpty()) {
+                        _errorMessage.value = "Article not found"
+                    } else {
+                        _allArticles.value = articlesList
+                        _filteredArticles.value = articlesList // Menampilkan artikel setelah diambil dari API
+                    }
                 } else {
-                    _allArticles.value = emptyList()
-                    _filteredArticles.value = emptyList()
+                    _errorMessage.value = "Failed to load articles"
                 }
             } catch (e: Exception) {
-                _allArticles.value = emptyList()
-                _filteredArticles.value = emptyList()
+                _errorMessage.value = "Error: ${e.localizedMessage}"
             }
         }
     }

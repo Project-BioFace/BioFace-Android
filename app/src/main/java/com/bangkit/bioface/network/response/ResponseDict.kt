@@ -2,16 +2,16 @@ package com.bangkit.bioface.network.response
 
 import com.google.gson.annotations.SerializedName
 
-data class ResponseDict(
-
+// Model untuk daftar artikel
+data class ResponseDictList(
 	@field:SerializedName("data")
-	val data: List<DictItem?>? = null,
+	val data: List<DictItem>? = null
+)
 
-	@field:SerializedName("message")
-	val message: String? = null,
-
-	@field:SerializedName("status")
-	val status: String? = null
+// Model untuk detail artikel
+data class ResponseDictDetail(
+	@field:SerializedName("data")
+	val data: DictItem? = null
 )
 
 data class DictItem(

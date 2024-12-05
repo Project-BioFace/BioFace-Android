@@ -5,19 +5,62 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".main.fitur.DictionaryFragment" >
+    tools:context=".main.fitur.DictionaryFragment">
 
+    <!-- Title -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="BioPedia"
+        android:fontFamily="@font/poppinsbold"
+        android:textSize="35sp"
+        android:textColor="@color/black"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="30dp" />
+
+    <!-- Subtitle -->
+    <TextView
+        android:id="@+id/subtitleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Catalog of Natural Plants and Skincare for Beauty"
+        android:textSize="14sp"
+        android:textColor="#7D7D7D"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <!-- SearchView -->
     <SearchView
         android:id="@+id/searchViewDict"
         android:layout_width="match_parent"
+        android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:queryHint="Enter user name"
+        android:queryHint="Search for pedia..."
         android:iconifiedByDefault="false"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="16dp"
         android:background="@drawable/bg_searchview"
-        android:queryBackground="@android:color/transparent"
-        />
+        android:queryBackground="@android:color/transparent"/>
+
+        <!-- TabLayout -->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:background="@color/bone_white"
+            app:tabIndicatorColor="@color/pinkprimary"
+            app:tabMode="fixed"
+            android:layout_marginTop="10dp"
+            app:tabSelectedTextColor="@color/pinkprimary"
+            app:tabTextColor="@color/black" />
+
+        <!-- FrameLayout for Fragments -->
+        <FrameLayout
+            android:id="@+id/fragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="16dp"
+            />
 
 </LinearLayout>

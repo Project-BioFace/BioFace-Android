@@ -2,16 +2,16 @@ package com.bangkit.bioface.network.response
 
 import com.google.gson.annotations.SerializedName
 
-data class ResponseSkincare(
-
+// Model untuk daftar artikel
+data class ResponseSkincareList(
 	@field:SerializedName("data")
-	val data: List<SkincareItem?>? = null,
+	val data: List<SkincareItem>? = null
+)
 
-	@field:SerializedName("message")
-	val message: String? = null,
-
-	@field:SerializedName("status")
-	val status: String? = null
+// Model untuk detail artikel
+data class ResponseSkincareDetail(
+	@field:SerializedName("data")
+	val data: SkincareItem? = null
 )
 
 data class SkincareItem(
