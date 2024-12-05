@@ -1,50 +1,77 @@
 package com.bangkit.bioface.main.fitur
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.observe
-import com.bangkit.bioface.adapter.ArticleAdapter
-import com.bangkit.bioface.databinding.FragmentArticlesBinding
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.ViewModelProvider
+import com.bangkit.bioface.R
+import com.bangkit.bioface.main.adapter.ArticleAdapter
+import com.bangkit.bioface.network.response.ArticlesItem
 import com.bangkit.bioface.viewmodel.FragmentArticlesViewModel
 
-class ArticlesFragment : Fragment() {
+class ArticlesFragment : Fragment(), ArticleAdapter.OnArticleClickListener {
 
-    private val binding by lazy { FragmentArticlesBinding.inflate(layoutInflater) }
-    private val viewModel: FragmentArticlesViewModel by viewModels()
+    private lateinit var viewModel: FragmentArticlesViewModel
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var searchView: SearchView
+    private lateinit var adapter: ArticleAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        return binding.root
+    ): View? {
+        viewModel = ViewModelProvider(this).get(FragmentArticlesViewModel::class.java) // Inisialisasi ViewModel
+        val view = inflater.inflate(R.layout.fragment_articles, container, false)
+        recyclerView = view.findViewById(R.id.recyclerViewArticles)
+        searchView = view.findViewById(R.id.searchViewArticles)
+
+        setupRecyclerView()
+        observeViewModel()
+        setupSearchView()
+
+        return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    // Implementasi OnArticleClickListener
+    override fun onArticleClick(article: ArticlesItem) {
+        val articleId = article.id ?: -1
+        Log.d("ArticlesFragment", "Article clicked with ID: $articleId") // Debugging log
+        val detailFragment = DetailArticlesFragment.newInstance(articleId)
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, detailFragment)
+            .addToBackStack(null)
+            .commit()
+    }
 
-        // Set up RecyclerView dan adapter
-        val articleAdapter = ArticleAdapter()
-        binding.recyclerViewArticles.adapter = articleAdapter
 
-        // Observe LiveData dari ViewModel
-        viewModel.articles.observe(viewLifecycleOwner) { articles ->
-            articleAdapter.submitList(articles)
-        }
+    private fun setupRecyclerView() {
+        adapter = ArticleAdapter(this) // Pass this as the listener
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(context) // Set layout manager
+    }
 
-        // Setup SearchView untuk filter artikel
-        binding.searchViewArticles.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+    private fun observeViewModel() {
+        viewModel.articles.observe(viewLifecycleOwner, Observer { articles ->
+            adapter.submitList(articles)
+        })
+        viewModel.getArticles() // Memanggil fungsi untuk mendapatkan artikel
+    }
+
+    private fun setupSearchView() {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.filterArticles(newText.orEmpty())
+                viewModel.filterArticles(newText ?: "")
                 return true
             }
         })

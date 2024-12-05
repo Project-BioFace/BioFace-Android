@@ -6,47 +6,43 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bangkit.bioface.network.api.ApiClient
 import com.bangkit.bioface.network.response.ArticlesItem
-import com.bangkit.bioface.network.response.ArticlesItems
+import com.bangkit.bioface.network.response.ResponseArticlesList
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class FragmentArticlesViewModel : ViewModel() {
 
-    private val _articles = MutableLiveData<List<ArticlesItem>>()
-    val articles: LiveData<List<ArticlesItem>> = _articles
+    private val _allArticles = MutableLiveData<List<ArticlesItem>>() // Data asli
+    private val _filteredArticles = MutableLiveData<List<ArticlesItem>>() // Data hasil filter
+    val articles: LiveData<List<ArticlesItem>> = _filteredArticles // Artikel yang ditampilkan
 
-    private var originalArticles: List<ArticlesItem> = emptyList()
-
-    init {
-        fetchArticles()
-    }
-
-    private fun fetchArticles() {
-        // Mengambil data artikel dari API
+    fun getArticles() {
         viewModelScope.launch {
             try {
-                val response: Response<List<ArticlesItems>> = ApiClient.apiService.getArticles()
-
-                // Cek apakah response berhasil
-                if (response.isSuccessful) {
-                    _articles.value = (response.body() ?: emptyList()) as List<ArticlesItem>?
-                    originalArticles = (response.body() ?: emptyList()) as List<ArticlesItem>
+                val response: Response<ResponseArticlesList> = ApiClient.apiService.getArticles()
+                if (response.isSuccessful && response.body() != null) {
+                    val articlesList = response.body()?.data ?: emptyList()
+                    _allArticles.value = articlesList
+                    _filteredArticles.value = articlesList
                 } else {
-                    // Tangani jika gagal
+                    _allArticles.value = emptyList()
+                    _filteredArticles.value = emptyList()
                 }
             } catch (e: Exception) {
-                // Tangani error jaringan
+                _allArticles.value = emptyList()
+                _filteredArticles.value = emptyList()
             }
         }
     }
 
     fun filterArticles(query: String) {
-        // Memfilter artikel berdasarkan query pencarian
-        if (query.isBlank()) {
-            _articles.value = originalArticles
+        val articles = _allArticles.value ?: emptyList()
+        _filteredArticles.value = if (query.isBlank()) {
+            articles // Tampilkan semua artikel jika query kosong
         } else {
-            _articles.value = originalArticles.filter { article ->
-                article.title!!.contains(query, ignoreCase = true)
+            articles.filter { article ->
+                article.title?.contains(query, ignoreCase = true) == true ||
+                        article.source?.contains(query, ignoreCase = true) == true
             }
         }
     }
