@@ -55,7 +55,7 @@ class ProductFragment : Fragment() {
         recyclerView.visibility = View.GONE
         tvEmpty.visibility = View.GONE
 
-        ApiClient.apiService.getProductHerbs().enqueue(object : Callback<List<HerbalItem>> {
+        ApiClient.apiService().getProductHerbs().enqueue(object : Callback<List<HerbalItem>> {
             override fun onResponse(
                 call: Call<List<HerbalItem>>,
                 response: Response<List<HerbalItem>>

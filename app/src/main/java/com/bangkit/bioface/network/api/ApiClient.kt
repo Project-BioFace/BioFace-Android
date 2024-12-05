@@ -1,20 +1,23 @@
 package com.bangkit.bioface.network.api
 
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
 
-    private const val BASE_URL = "https://static-subject-442703-s7.et.r.appspot.com/"
-
-    private val retrofit: Retrofit by lazy {
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+    fun apiService(): ApiService {
+        val loggingInterceptor =
+            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        val client = OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
             .build()
-    }
-
-    val apiService: ApiService by lazy {
-        retrofit.create(ApiService::class.java)
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://sincere-baton-438114-g6.et.r.appspot.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+        return retrofit.create(ApiService::class.java)
     }
 }

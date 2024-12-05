@@ -1,23 +1,36 @@
 package com.bangkit.bioface.main.fitur
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bangkit.bioface.R
 import com.bangkit.bioface.databinding.FragmentPreviewBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import com.bangkit.bioface.network.api.ApiClient
+import com.bangkit.bioface.network.response.PredictionResponse
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import retrofit2.HttpException
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 
 class PreviewFragment : Fragment() {
     private lateinit var binding: FragmentPreviewBinding
     private var capturedImage: Bitmap? = null
+    private var currentImageUri: Uri? = null // Menyimpan URI gambar
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,6 +46,7 @@ class PreviewFragment : Fragment() {
 
         // Ambil gambar dari argumen
         capturedImage = arguments?.getParcelable(ARG_IMAGE)
+        currentImageUri = arguments?.getParcelable(ARG_IMAGE_URI) // Ambil URI jika ada
 
         // Tampilkan gambar di ImageView
         binding.imageView.setImageBitmap(capturedImage)
@@ -45,55 +59,127 @@ class PreviewFragment : Fragment() {
 
         binding.scanButton.setOnClickListener {
             // Proses gambar menggunakan model AI
-            processImage(capturedImage)
+            processImage(currentImageUri)
         }
     }
 
-    private fun processImage(image: Bitmap?) {
-        if (image != null) {
+    private fun processImage(imageUri: Uri?) {
+        if (imageUri != null) {
             // Tampilkan ProgressBar dan TextView
             binding.progressBar.visibility = View.VISIBLE
             binding.progressText.visibility = View.VISIBLE
             binding.progressText.text = "Memproses gambar..."
 
-            // Simulasi pemrosesan gambar
-            lifecycleScope.launch {
-                // Simulasi proses 0-100%
-                for (i in 0..100 step 10) {
-                    withContext(Dispatchers.Main) {
-                        binding.progressText.text = "Memproses... $i%"
+            // Konversi URI gambar ke file
+            val imageFile = uriToFile(imageUri, requireContext()).reduceFileImage()
+
+            // Tambahkan log untuk memeriksa file gambar
+            Log.d("PreviewFragment", "Image File Path: ${imageFile.absolutePath}, Size: ${imageFile.length()} bytes")
+
+            val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
+            val multipartBody = MultipartBody.Part.createFormData("image", imageFile.name, requestImageFile)
+
+
+            // Mendapatkan token dari pengguna yang sedang login
+            FirebaseAuth.getInstance().currentUser?.getIdToken(true)
+                ?.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val token = task.result?.token
+                        // Kirim permintaan ke API dengan token
+                        sendImageToApi(token, multipartBody)
+                    } else {
+                        // Tangani kesalahan jika tidak dapat mendapatkan token
+                        Log.e("Auth", "Failed to get token: ${task.exception?.message}")
+                        Toast.makeText(requireContext(), "Gagal mendapatkan token", Toast.LENGTH_SHORT).show()
+                        // Sembunyikan ProgressBar
+                        binding.progressBar.visibility = View.GONE
+                        binding.progressText.visibility = View.GONE
                     }
-                    delay(500) // Simulasi waktu pemrosesan
                 }
-
-                // Panggil model AI untuk memproses gambar
-                // Misalnya, Anda bisa memanggil fungsi dari rekan Anda di sini
-                // Contoh:
-                // val result = aiModel.processImage(image)
-
-                // Setelah pemrosesan selesai, navigasi ke ResultFragment
-                navigateToResultFragment(image) // Ganti dengan hasil pemrosesan
-            }
         } else {
             Toast.makeText(requireContext(), "Gambar tidak tersedia untuk diproses", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun navigateToResultFragment(image: Bitmap?) {
-        val resultFragment = ResultFragment.newInstance(image) // Ganti dengan hasil pemrosesan
+
+    private fun sendImageToApi(token: String?, multipartBody: MultipartBody.Part) {
+        if (token != null) {
+            lifecycleScope.launch {
+                try {
+                    val apiService = ApiClient.apiService()
+                    val predictionResponse = apiService.uploadImage("Bearer $token", multipartBody)
+
+                    // Navigasi ke ResultFragment dengan hasil
+                    navigateToResultFragment(predictionResponse)
+                } catch (e: HttpException) {
+                    val errorResponse = e.response()?.errorBody()?.string()
+                    Log.e("PreviewFragment", "Error response: $errorResponse")
+                    Toast.makeText(requireContext(), "Error: $errorResponse", Toast.LENGTH_SHORT).show()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Toast.makeText(requireContext(), "Terjadi kesalahan: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            Toast.makeText(requireContext(), "Token tidak valid", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+
+
+
+    private fun navigateToResultFragment(predictionResponse: PredictionResponse) {
+        val resultFragment = ResultFragment.newInstance(capturedImage, predictionResponse)
         parentFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, resultFragment) // Ganti dengan ID container yang sesuai
-            .addToBackStack(null) // Tambahkan ke back stack jika ingin kembali
+            .replace(R.id.fragmentContainer, resultFragment)
+            .addToBackStack(null)
             .commit()
+    }
+
+    private fun uriToFile(imageUri: Uri, context: Context): File {
+        val myFile = createCustomTempFile(context)
+        val inputStream = context.contentResolver.openInputStream(imageUri) as InputStream
+        val outputStream = FileOutputStream(myFile)
+        val buffer = ByteArray(1024)
+        var length: Int
+        while (inputStream.read(buffer).also { length = it } > 0) outputStream.write(buffer, 0, length)
+        outputStream.close()
+        inputStream.close()
+        return myFile
+    }
+
+    private fun createCustomTempFile(context: Context): File {
+        val filesDir = context.externalCacheDir
+        return File.createTempFile("temp_image", ".jpg", filesDir)
+    }
+
+    private fun File.reduceFileImage(): File {
+        val file = this
+        val bitmap = BitmapFactory.decodeFile(file.path)
+        var compressQuality = 100
+        var streamLength: Int
+        val MAXIMAL_SIZE = 1000000 // 1 MB
+        do {
+            val bmpStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream)
+            val bmpPicByteArray = bmpStream.toByteArray()
+            streamLength = bmpPicByteArray.size
+            compressQuality -= 5
+        } while (streamLength > MAXIMAL_SIZE)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
+        return file
     }
 
     companion object {
         private const val ARG_IMAGE = "arg_image"
+        private const val ARG_IMAGE_URI = "arg_image_uri" // Tambahkan argumen untuk URI
 
-        fun newInstance(image: Bitmap?): PreviewFragment {
+        fun newInstance(image: Bitmap?, imageUri: Uri?): PreviewFragment {
             val fragment = PreviewFragment()
             val args = Bundle()
             args.putParcelable(ARG_IMAGE, image)
+            args.putParcelable(ARG_IMAGE_URI, imageUri) // Simpan URI
             fragment.arguments = args
             return fragment
         }

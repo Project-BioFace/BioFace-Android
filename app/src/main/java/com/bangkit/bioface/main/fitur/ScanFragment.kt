@@ -3,6 +3,7 @@ package com.bangkit.bioface.main.fitur
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -66,8 +67,15 @@ class ScanFragment : Fragment() {
         imageCapture.takePicture(outputOptions, ContextCompat.getMainExecutor(requireContext()), object : ImageCapture.OnImageSavedCallback {
             override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                 // Gambar berhasil disimpan, lakukan pemrosesan
-                val bitmap = BitmapFactory.decodeFile(file.absolutePath)
-                navigateToPreviewFragment(bitmap)
+                val file = outputFileResults.savedUri?.let { uri ->
+                    // Dapatkan bitmap dari file yang disimpan
+                    val bitmap = BitmapFactory.decodeFile(uri.path)
+                    // Navigasi ke PreviewFragment dengan bitmap dan URI
+                    navigateToPreviewFragment(bitmap, uri) // Pastikan untuk mengirimkan URI
+                } ?: run {
+                    Log.e("ScanFragment", "Error: savedUri is null")
+                    Toast.makeText(requireContext(), "Gagal mengambil gambar", Toast.LENGTH_SHORT).show()
+                }
             }
 
             override fun onError(exception: ImageCaptureException) {
@@ -75,6 +83,7 @@ class ScanFragment : Fragment() {
                 Toast.makeText(requireContext(), "Gagal mengambil gambar", Toast.LENGTH_SHORT).show()
             }
         })
+
     }
 
     private fun createImageFile(): File {
@@ -83,13 +92,14 @@ class ScanFragment : Fragment() {
         return File.createTempFile("captured_image_", ".jpg", storageDir)
     }
 
-    private fun navigateToPreviewFragment(image: Bitmap?) {
-        val previewFragment = PreviewFragment.newInstance(image)
+    private fun navigateToPreviewFragment(image: Bitmap?, imageUri: Uri?) {
+        val previewFragment = PreviewFragment.newInstance(image, imageUri) // Pastikan untuk mengirimkan imageUri
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, previewFragment) // Ganti dengan ID container yang sesuai
             .addToBackStack(null) // Tambahkan ke back stack jika ingin kembali
             .commit()
     }
+
 
     @OptIn(ExperimentalGetImage::class)
     private fun startCamera() {

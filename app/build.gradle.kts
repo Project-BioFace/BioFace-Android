@@ -94,4 +94,9 @@ dependencies {
 
     implementation ("androidx.fragment:fragment-ktx:1.5.5")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+
 }

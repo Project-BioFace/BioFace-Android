@@ -25,7 +25,7 @@ class FragmentArticlesViewModel : ViewModel() {
         // Mengambil data artikel dari API
         viewModelScope.launch {
             try {
-                val response: Response<List<ArticlesItems>> = ApiClient.apiService.getArticles()
+                val response: Response<List<ArticlesItems>> = ApiClient.apiService().getArticles()
 
                 // Cek apakah response berhasil
                 if (response.isSuccessful) {

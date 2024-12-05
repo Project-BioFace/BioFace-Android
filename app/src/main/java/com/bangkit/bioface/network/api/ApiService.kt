@@ -1,16 +1,19 @@
 package com.bangkit.bioface.network.api
 
 import com.bangkit.bioface.main.adapter.HerbalItem
-import com.bangkit.bioface.main.adapter.ImageRequest
+
 import com.bangkit.bioface.network.response.ArticlesItems
 import com.bangkit.bioface.network.response.DictItem
+import com.bangkit.bioface.network.response.PredictionResponse
 import com.bangkit.bioface.network.response.SkincareItem
-import okhttp3.ResponseBody
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface ApiService {
@@ -21,8 +24,13 @@ interface ApiService {
     @GET("product") // Endpoint untuk kategori product
     fun getProductHerbs(): Call<List<HerbalItem>>
 
+    @Multipart
     @POST("predict")
-    fun uploadImage(@Body request: ImageRequest): Call<ResponseBody>
+    suspend fun uploadImage(
+        @Header("Authorization") token: String,
+        @Part file: MultipartBody.Part
+    ): PredictionResponse
+
 
     @GET("articles/{id}")
     suspend fun getArticleById(@Path("id") id: Int): Response<ArticlesItems>  // Menggunakan suspend untuk coroutine
