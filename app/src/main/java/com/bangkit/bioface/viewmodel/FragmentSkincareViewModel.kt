@@ -11,12 +11,12 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class FragmentSkincareViewModel : ViewModel() {
+    private val _allSkincare = MutableLiveData<List<SkincareItem>>()
+    private val _filteredSkincare = MutableLiveData<List<SkincareItem>>()
+    private val _errorMessage = MutableLiveData<String>()
 
-    private val _allSkincare = MutableLiveData<List<SkincareItem>>() // Data asli
-    private val _filteredSkincare = MutableLiveData<List<SkincareItem>>() // Data hasil filter
-    private val _errorMessage = MutableLiveData<String>() // Pesan error
-    val skincare: LiveData<List<SkincareItem>> = _filteredSkincare // Artikel yang ditampilkan
-    val errorMessage: LiveData<String> = _errorMessage // Pesan error
+    val skincare: LiveData<List<SkincareItem>> = _filteredSkincare
+    val errorMessage: LiveData<String> = _errorMessage
 
     fun getSkincare() {
         viewModelScope.launch {
@@ -28,14 +28,23 @@ class FragmentSkincareViewModel : ViewModel() {
                         _errorMessage.value = "Skincare not found"
                     } else {
                         _allSkincare.value = skincareList
-                        _filteredSkincare.value = skincareList // Menampilkan artikel setelah diambil dari API
+                        _filteredSkincare.value = skincareList
                     }
                 } else {
-                    _errorMessage.value = "Failed to load Skincare Product"
+                    _errorMessage.value = "Failed to load Skincare"
                 }
             } catch (e: Exception) {
                 _errorMessage.value = "Error: ${e.localizedMessage}"
             }
         }
+    }
+
+    // Tambahkan fungsi untuk melakukan filter
+    fun searchSkincare(query: String) {
+        val currentList = _allSkincare.value ?: emptyList()
+        val filteredList = currentList.filter {
+            it.name?.contains(query, ignoreCase = true) == true
+        }
+        _filteredSkincare.value = filteredList
     }
 }

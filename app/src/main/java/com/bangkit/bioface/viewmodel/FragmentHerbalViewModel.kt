@@ -11,12 +11,12 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class FragmentHerbalViewModel : ViewModel() {
+    private val _allHerbal = MutableLiveData<List<DictItem>>()
+    private val _filteredHerbal = MutableLiveData<List<DictItem>>()
+    private val _errorMessage = MutableLiveData<String>()
 
-    private val _allHerbal = MutableLiveData<List<DictItem>>() // Data asli
-    private val _filteredHerbal = MutableLiveData<List<DictItem>>() // Data hasil filter
-    private val _errorMessage = MutableLiveData<String>() // Pesan error
-    val herbal: LiveData<List<DictItem>> = _filteredHerbal // Artikel yang ditampilkan
-    val errorMessage: LiveData<String> = _errorMessage // Pesan error
+    val herbal: LiveData<List<DictItem>> = _filteredHerbal
+    val errorMessage: LiveData<String> = _errorMessage
 
     fun getHerbal() {
         viewModelScope.launch {
@@ -28,7 +28,7 @@ class FragmentHerbalViewModel : ViewModel() {
                         _errorMessage.value = "Herbal not found"
                     } else {
                         _allHerbal.value = herbalList
-                        _filteredHerbal.value = herbalList // Menampilkan artikel setelah diambil dari API
+                        _filteredHerbal.value = herbalList
                     }
                 } else {
                     _errorMessage.value = "Failed to load Herbal"
@@ -37,5 +37,14 @@ class FragmentHerbalViewModel : ViewModel() {
                 _errorMessage.value = "Error: ${e.localizedMessage}"
             }
         }
+    }
+
+    // Tambahkan fungsi untuk melakukan filter
+    fun searchHerbal(query: String) {
+        val currentList = _allHerbal.value ?: emptyList()
+        val filteredList = currentList.filter {
+            it.name?.contains(query, ignoreCase = true) == true
+        }
+        _filteredHerbal.value = filteredList
     }
 }

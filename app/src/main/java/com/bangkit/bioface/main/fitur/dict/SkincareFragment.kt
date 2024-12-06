@@ -67,4 +67,8 @@ class SkincareFragment : Fragment(), SkincareAdapter.OnSkincareClickListener {
         viewModel.getSkincare() // Memanggil fungsi untuk mendapatkan artikel
     }
 
+    fun searchSkincare(query: String) {
+        viewModel.searchSkincare(query)
+    }
+
 }

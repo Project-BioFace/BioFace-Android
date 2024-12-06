@@ -65,4 +65,8 @@ class HerbalFragment : Fragment(), HerbalAdapter.OnDictClickListener {
         viewModel.getHerbal() // Memanggil fungsi untuk mendapatkan artikel
     }
 
+    fun searchHerbal(query: String) {
+        viewModel.searchHerbal(query)
+    }
+
 }
