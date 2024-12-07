@@ -30,7 +30,7 @@ class SkincareFragment : Fragment(), SkincareAdapter.OnSkincareClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this).get(FragmentSkincareViewModel::class.java) // Inisialisasi ViewModel
+        viewModel = ViewModelProvider(requireActivity()).get(FragmentSkincareViewModel::class.java) // Inisialisasi ViewModel
         val view = inflater.inflate(R.layout.fragment_skincare, container, false)
         recyclerView = view.findViewById(R.id.recyclerViewSkincare)
 

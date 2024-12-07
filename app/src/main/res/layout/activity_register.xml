@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/greenBg"
     tools:context=".main.auth.RegisterActivity">
 
     <!-- Container untuk semua elemen -->
@@ -33,7 +33,7 @@
                 android:id="@+id/iv_logoRegis"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/ic_bio1"
+                android:src="@drawable/biofacefix"
                 android:layout_marginEnd="5dp"
                 />
 
@@ -49,7 +49,7 @@
                     android:text="@string/welcome_to"
                     android:fontFamily="@font/poppinsbold"
                     android:textSize="25sp"
-                    android:textColor="@color/pinkprimary"/>
+                    android:textColor="@color/greenDark"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
                     android:fontFamily="@font/mhiora"
                     android:textStyle="bold"
                     android:textSize="47sp"
-                    android:textColor="@color/pinkprimary"/>
+                    android:textColor="@color/greenDark"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -70,9 +70,9 @@
             android:text="@string/healthy_solution"
             android:fontFamily="@font/poppinsmedium"
             android:textSize="15sp"
-            android:textColor="@color/pinkprimary"
+            android:textColor="@color/greenDark"
             android:textStyle="italic"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="0dp"/>
 
         <!-- Input Section -->
         <LinearLayout
@@ -88,7 +88,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="57dp"
                 android:hint="@string/hint_name"
-                android:background="@drawable/button_shape2"
                 android:textSize="15sp"
                 android:fontFamily="@font/poppinsregular"
                 android:paddingStart="20dp"
@@ -100,35 +99,64 @@
                 android:layout_height="57dp"
                 android:hint="@string/hint_email"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/button_shape2"
                 android:textSize="15sp"
                 android:fontFamily="@font/poppinsregular"
                 android:paddingStart="20dp"
                 android:inputType="textEmailAddress"/>
 
-            <EditText
-                android:id="@+id/r_edt_password"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="57dp"
-                android:layout_marginTop="10dp"
-                android:hint="@string/hint_password"
-                android:background="@drawable/button_shape2"
-                android:paddingStart="20dp"
-                android:textSize="15sp"
-                android:fontFamily="@font/poppinsregular"
-                android:inputType="textPassword"/>
+                android:layout_marginTop="10dp">
 
-            <EditText
-                android:id="@+id/r_edt_confirmPass"
+                <EditText
+                    android:id="@+id/r_edt_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Create your password"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppinsregular"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="50dp"
+                    android:inputType="textPassword"/>
+
+                <ImageView
+                    android:id="@+id/r_password_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_visibility_off"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="Toggle password visibility"/>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="57dp"
-                android:layout_marginTop="10dp"
-                android:hint="@string/hint_confirm_password"
-                android:background="@drawable/button_shape2"
-                android:paddingStart="20dp"
-                android:textSize="15sp"
-                android:fontFamily="@font/poppinsregular"
-                android:inputType="textPassword"/>
+                android:layout_marginTop="10dp">
+
+                <EditText
+                    android:id="@+id/r_edt_confirmPass"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Confirm your password"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppinsregular"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="50dp"
+                    android:inputType="textPassword"/>
+
+                <ImageView
+                    android:id="@+id/r_confimpass_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_visibility_off"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="Toggle password visibility"/>
+            </RelativeLayout>
         </LinearLayout>
 
         <!-- Register Button -->
@@ -165,7 +193,7 @@
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/poppinssemibold"
                 android:textSize="12sp"
-                android:textColor="@color/pinksecondary"/>
+                android:textColor="@color/greenDark"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,6 +7,7 @@
     android:layout_margin="8dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="4dp"
+    app:cardBackgroundColor="@color/greenBg"
     tools:context=".main.fitur.ArticlesFragment">
 
     <!-- ConstraintLayout untuk mengatur image dan teks -->
@@ -34,8 +35,10 @@
             android:layout_height="wrap_content"
             android:text="Article Title"
             android:textSize="16sp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/greenText"
             android:layout_marginStart="16dp"
+            android:fontFamily="@font/poppinssemibold"
+            android:layout_marginEnd="10dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toEndOf="@id/articleImage"
             app:layout_constraintTop_toTopOf="parent"
@@ -47,8 +50,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Source: Article Source"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/poppinsregular"
             android:textSize="12sp"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@color/greenLightText"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
             app:layout_constraintStart_toEndOf="@id/articleImage"

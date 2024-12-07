@@ -1,5 +1,6 @@
 package com.bangkit.bioface.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,6 +23,9 @@ class FragmentHerbalViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response: Response<ResponseDictList> = ApiClient.apiService.getDictItems()
+                Log.d("HerbalViewModel", "Response code: ${response.code()}")
+                Log.d("HerbalViewModel", "Response body: ${response.body()}")
+                Log.d("HerbalViewModel", "Response error: ${response.errorBody()?.string()}")
                 if (response.isSuccessful && response.body() != null) {
                     val herbalList = response.body()?.data ?: emptyList()
                     if (herbalList.isEmpty()) {
@@ -34,6 +38,7 @@ class FragmentHerbalViewModel : ViewModel() {
                     _errorMessage.value = "Failed to load Herbal"
                 }
             } catch (e: Exception) {
+                Log.e("HerbalViewModel", "Error: ${e.localizedMessage}", e)
                 _errorMessage.value = "Error: ${e.localizedMessage}"
             }
         }

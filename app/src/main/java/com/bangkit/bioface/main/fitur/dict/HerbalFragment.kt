@@ -28,7 +28,7 @@ class HerbalFragment : Fragment(), HerbalAdapter.OnDictClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this).get(FragmentHerbalViewModel::class.java) // Inisialisasi ViewModel
+        viewModel = ViewModelProvider(requireActivity()).get(FragmentHerbalViewModel::class.java) // Inisialisasi ViewModel
         val view = inflater.inflate(R.layout.fragment_herbal, container, false)
         recyclerView = view.findViewById(R.id.recyclerViewHerbal)
 

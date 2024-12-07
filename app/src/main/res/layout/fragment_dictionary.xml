@@ -15,7 +15,7 @@
         android:text="BioPedia"
         android:fontFamily="@font/poppinsbold"
         android:textSize="35sp"
-        android:textColor="@color/black"
+        android:textColor="@color/greenText"
         android:layout_marginStart="16dp"
         android:layout_marginTop="30dp" />
 
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:text="Catalog of Natural Plants and Skincare for Beauty"
         android:textSize="14sp"
-        android:textColor="#7D7D7D"
+        android:textColor="@color/greenLightText"
         android:layout_marginBottom="16dp"
         android:layout_marginStart="16dp"/>
 
@@ -49,11 +49,11 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:background="@color/bone_white"
-            app:tabIndicatorColor="@color/pinkprimary"
+            app:tabIndicatorColor="@color/greenDark"
             app:tabMode="fixed"
             android:layout_marginTop="10dp"
-            app:tabSelectedTextColor="@color/pinkprimary"
-            app:tabTextColor="@color/black" />
+            app:tabSelectedTextColor="@color/greenDark"
+            app:tabTextColor="@color/greenLightText" />
 
         <!-- FrameLayout for Fragments -->
         <FrameLayout

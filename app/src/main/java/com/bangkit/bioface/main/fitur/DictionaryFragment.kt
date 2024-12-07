@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.bangkit.bioface.R
 import com.bangkit.bioface.main.fitur.dict.HerbalFragment
 import com.bangkit.bioface.main.fitur.dict.SkincareFragment
-import com.bangkit.bioface.viewmodel.FragmentDictViewModel
 import com.bangkit.bioface.viewmodel.FragmentHerbalViewModel
 import com.bangkit.bioface.viewmodel.FragmentSkincareViewModel
 import com.google.android.material.tabs.TabLayout
@@ -19,11 +18,17 @@ import com.google.android.material.tabs.TabLayout
 class DictionaryFragment : Fragment() {
     private lateinit var searchView: SearchView
     private var currentFragment: Fragment? = null
+    private lateinit var herbalViewModel: FragmentHerbalViewModel
+    private lateinit var skincareViewModel: FragmentSkincareViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Inisialisasi ViewModel di sini
+        herbalViewModel = ViewModelProvider(requireActivity()).get(FragmentHerbalViewModel::class.java)
+        skincareViewModel = ViewModelProvider(requireActivity()).get(FragmentSkincareViewModel::class.java)
+
         return inflater.inflate(R.layout.fragment_dictionary, container, false)
     }
 
@@ -39,18 +44,28 @@ class DictionaryFragment : Fragment() {
         tabLayout.addTab(tabLayout.newTab().setText("Skincare"))
 
         // Load default fragment
-        currentFragment = HerbalFragment()
-        replaceFragment(currentFragment!!)
+        val herbalFragment = HerbalFragment()
+        currentFragment = herbalFragment
+        replaceFragment(herbalFragment)
+
+        herbalViewModel.getHerbal()
+        skincareViewModel.getSkincare()
 
         // Handle tab selection
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                currentFragment = when (tab.position) {
-                    0 -> HerbalFragment()
-                    1 -> SkincareFragment()
-                    else -> HerbalFragment()
+                when (tab.position) {
+                    0 -> {
+                        val fragment = HerbalFragment()
+                        currentFragment = fragment
+                        replaceFragment(fragment)
+                    }
+                    1 -> {
+                        val fragment = SkincareFragment()
+                        currentFragment = fragment
+                        replaceFragment(fragment)
+                    }
                 }
-                replaceFragment(currentFragment!!)
 
                 // Reset search query
                 searchView.setQuery("", false)
@@ -77,12 +92,10 @@ class DictionaryFragment : Fragment() {
     private fun performSearch(query: String) {
         when (currentFragment) {
             is HerbalFragment -> {
-                val herbalFragment = currentFragment as HerbalFragment
-                herbalFragment.searchHerbal(query)
+                herbalViewModel.searchHerbal(query)
             }
             is SkincareFragment -> {
-                val skincareFragment = currentFragment as SkincareFragment
-                skincareFragment.searchSkincare(query)
+                skincareViewModel.searchSkincare(query)
             }
         }
     }

@@ -12,29 +12,26 @@ import retrofit2.Response
 
 class FragmentArticlesViewModel : ViewModel() {
 
-    private val _allArticles = MutableLiveData<List<ArticlesItem>>() // Data asli
-    private val _filteredArticles = MutableLiveData<List<ArticlesItem>>() // Data hasil filter
-    private val _errorMessage = MutableLiveData<String>() // Pesan error
-    val articles: LiveData<List<ArticlesItem>> = _filteredArticles // Artikel yang ditampilkan
-    val errorMessage: LiveData<String> = _errorMessage // Pesan error
+    private val _allArticles = MutableLiveData<List<ArticlesItem>>()
+    private val _filteredArticles = MutableLiveData<List<ArticlesItem>>()
+    private val _isLoading = MutableLiveData<Boolean>()
+    val articles: LiveData<List<ArticlesItem>> = _filteredArticles
+    val isLoading: LiveData<Boolean> = _isLoading
 
     fun getArticles() {
+        _isLoading.value = true // Menampilkan ProgressBar
         viewModelScope.launch {
             try {
                 val response: Response<ResponseArticlesList> = ApiClient.apiService.getArticles()
                 if (response.isSuccessful && response.body() != null) {
                     val articlesList = response.body()?.data ?: emptyList()
-                    if (articlesList.isEmpty()) {
-                        _errorMessage.value = "Article not found"
-                    } else {
-                        _allArticles.value = articlesList
-                        _filteredArticles.value = articlesList // Menampilkan artikel setelah diambil dari API
-                    }
-                } else {
-                    _errorMessage.value = "Failed to load articles"
+                    _allArticles.value = articlesList
+                    _filteredArticles.value = articlesList
                 }
             } catch (e: Exception) {
-                _errorMessage.value = "Error: ${e.localizedMessage}"
+                // Log atau atur error handling
+            } finally {
+                _isLoading.value = false // Sembunyikan ProgressBar
             }
         }
     }
@@ -42,7 +39,7 @@ class FragmentArticlesViewModel : ViewModel() {
     fun filterArticles(query: String) {
         val articles = _allArticles.value ?: emptyList()
         _filteredArticles.value = if (query.isBlank()) {
-            articles // Tampilkan semua artikel jika query kosong
+            articles
         } else {
             articles.filter { article ->
                 article.title?.contains(query, ignoreCase = true) == true ||
