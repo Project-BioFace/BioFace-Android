@@ -19,7 +19,7 @@ class FragmentArticlesViewModel : ViewModel() {
     fun getArticles() {
         viewModelScope.launch {
             try {
-                val response: Response<ResponseArticlesList> = ApiClient.apiService.getArticles()
+                val response: Response<ResponseArticlesList> = ApiClient.apiService().getArticles()
                 if (response.isSuccessful && response.body() != null) {
                     val articlesList = response.body()?.data ?: emptyList()
                     _allArticles.value = articlesList

@@ -14,7 +14,7 @@ object ApiClient {
             .addInterceptor(loggingInterceptor)
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://sincere-baton-438114-g6.et.r.appspot.com/")
+            .baseUrl("https://bioface-model-api-542945642521.asia-southeast2.run.app")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

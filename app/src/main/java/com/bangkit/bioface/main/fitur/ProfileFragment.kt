@@ -1,11 +1,10 @@
 package com.bangkit.bioface.main.fitur
 
 import android.app.Activity
-import android.content.Context
+
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -15,10 +14,15 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bangkit.bioface.R
 import com.bangkit.bioface.main.LandingActivity
+import com.bangkit.bioface.main.adapter.HistoryAdapter
+import com.bangkit.bioface.main.fitur.detail.DetailHistoryFragment
+import com.bangkit.bioface.viewmodel.HistoryViewModel
 import com.bumptech.glide.Glide
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -27,8 +31,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.yalantis.ucrop.UCrop
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
@@ -41,6 +43,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private lateinit var shimmerEmailLayout: ShimmerFrameLayout
     private lateinit var shimmerProfilePictureLayout: ShimmerFrameLayout
 
+    private lateinit var historyViewModel: HistoryViewModel
+    private lateinit var historyRecyclerView: RecyclerView
+    private lateinit var historyAdapter: HistoryAdapter
+    private lateinit var noHistoryTextView: TextView
+
     companion object {
         private const val CAMERA_PERMISSION_CODE = 100
         private const val GALLERY_PERMISSION_CODE = 101
@@ -50,6 +57,64 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        // Inisialisasi RecyclerView dan TextView
+        historyRecyclerView = view.findViewById(R.id.historyRecyclerView)
+        noHistoryTextView = view.findViewById(R.id.noHistoryTextView)
+
+        // Inisialisasi ViewModel
+        historyViewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
+
+        // Setup RecyclerView
+        historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        historyAdapter = HistoryAdapter(emptyList(), { predictionId ->
+            // Handle item click
+            val detailFragment = DetailHistoryFragment.newInstance(predictionId)
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, detailFragment)
+                .addToBackStack(null)
+                .commit()
+        }, { predictionId ->
+            // Handle delete click
+            historyViewModel.deleteHistory(predictionId, {
+                // Callback onSuccess
+                Toast.makeText(requireContext(), "History dengan ID $predictionId telah dihapus", Toast.LENGTH_SHORT).show()
+                historyViewModel.fetchHistory() // Memperbarui daftar history setelah dihapus
+            }, { errorMessage ->
+                // Callback onFailure
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+            })
+        })
+
+        historyRecyclerView.adapter = historyAdapter
+
+        historyViewModel.historyList.observe(viewLifecycleOwner) { predictions ->
+            if (predictions.isEmpty()) {
+                noHistoryTextView.visibility = View.VISIBLE
+                historyRecyclerView.visibility = View.GONE
+            } else {
+                noHistoryTextView.visibility = View.GONE
+                historyRecyclerView.visibility = View.VISIBLE
+                historyAdapter.updateData(predictions) // Perbarui data adapter
+            }
+        }
+
+        // Memanggil fetchHistory untuk mendapatkan data awal
+        historyViewModel.fetchHistory()
+
+        // Tambahkan listener untuk menghapus semua history
+        view.findViewById<TextView>(R.id.tvHapusHistory).setOnClickListener {
+            historyViewModel.deleteAllHistory({
+                Toast.makeText(requireContext(), "Semua history telah dihapus", Toast.LENGTH_SHORT).show()
+                // Panggil fetchHistory untuk memperbarui tampilan setelah penghapusan
+                historyViewModel.fetchHistory()
+            }, { errorMessage ->
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+            })
+        }
+
+
 
         // Initialize UI components
         profileName = view.findViewById(R.id.profileName)
@@ -115,6 +180,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             handleDataLoadError("Pengguna Tidak Login")
         }
     }
+
+
 
     private fun loadProfilePicture() {
         // Start shimmer effect before loading image

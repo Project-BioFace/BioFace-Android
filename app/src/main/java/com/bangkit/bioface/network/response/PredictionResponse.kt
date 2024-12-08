@@ -3,6 +3,58 @@ package com.bangkit.bioface.network.response
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
+data class BaseResponse(
+    @SerializedName("status")
+    val status: String,
+
+    @SerializedName("message")
+    val message: String? = null
+) : Serializable
+
+data class HistoryResponse(
+    @SerializedName("status")
+    val status: String,
+
+    @SerializedName("email")
+    val email: String,
+
+    @SerializedName("predictions")
+    val predictions: List<PredictionHistory> // Ubah menjadi List<PredictionHistory>
+) : Serializable
+
+data class PredictionHistory(
+    @SerializedName("disease_accuracy")
+    val diseaseAccuracy: String,
+
+    @SerializedName("disease_description")
+    val diseaseDescription: String,
+
+    @SerializedName("face_disease")
+    val faceDisease: String,
+
+    @SerializedName("id")
+    val id: Int,
+
+    @SerializedName("image_url")
+    val imageUrl: String,
+
+    @SerializedName("prediction_detail")
+    val predictionDetail: PredictionDetailHistory,
+
+    @SerializedName("recomendation")
+    val recomendation: Recommendation,
+
+    @SerializedName("timestamp")
+    val timestamp: String
+) : Serializable
+
+data class PredictionDetailHistory(
+    @SerializedName("causes")
+    var causes: List<String>? = null,
+
+    @SerializedName("detail_disease_accuracy")
+    var detailDiseaseAccuracy: String? = null
+) : Serializable
 
 data class PredictionResponse(
     @SerializedName("disease_accuracy")
@@ -25,43 +77,47 @@ data class PredictionResponse(
 
     @SerializedName("status")
     var status: String? = null
-) : java.io.Serializable
-
+) : Serializable
 
 data class PredictionDetail(
     @SerializedName("causes")
     var causes: List<String>? = null,
 
     @SerializedName("detail_disease_accuracy")
-    var detailDiseaseAccuracy: Map<String, String>? = null
-) : java.io.Serializable
+    var detailDiseaseAccuracy: Map<String, String>? = null // Untuk hasil prediksi
+) : Serializable
 
+
+
+// Model untuk Recommendation
 data class Recommendation(
     @SerializedName("herbalSolutions")
     var herbalSolutions: List<HerbalSolution>? = null,
 
     @SerializedName("skincareProducts")
     var skincareProducts: List<SkincareProduct>? = null
-) : java.io.Serializable
+) : Serializable
 
+// Model untuk HerbalSolution
 data class HerbalSolution(
-    @SerializedName("benefit")
-    var benefit: String? = null,
-
-    @SerializedName("imageUrl")
-    var imageUrl: String? = null,
-
     @SerializedName("name")
     var name: String? = null,
 
+    @SerializedName("benefit")
+    var benefit: String? = null,
+
     @SerializedName("usage")
-    var usage: String? = null
-) : java.io.Serializable
+    var usage: String? = null,
 
-data class SkincareProduct(
     @SerializedName("imageUrl")
-    var imageUrl: String? = null,
+    var imageUrl: String? = null
+) : Serializable
 
+// Model untuk SkincareProduct
+data class SkincareProduct(
     @SerializedName("name")
-    var name: String? = null
+    var name: String? = null,
+
+    @SerializedName("imageUrl")
+    var imageUrl: String? = null
 ) : Serializable
