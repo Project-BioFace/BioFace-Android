@@ -1,13 +1,16 @@
 package com.bangkit.bioface.main.fitur.detail
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bangkit.bioface.R
 import com.bangkit.bioface.databinding.FragmentDetailHistoryBinding
 import com.bangkit.bioface.main.adapter.HerbalSolutionAdapter
 import com.bangkit.bioface.main.adapter.SkincareProductAdapter
@@ -16,6 +19,7 @@ import com.bangkit.bioface.network.response.HerbalSolution
 import com.bangkit.bioface.network.response.PredictionHistory
 import com.bangkit.bioface.network.response.SkincareProduct
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
@@ -54,9 +58,20 @@ class DetailHistoryFragment : Fragment() {
                             try {
                                 // Mengambil detail history berdasarkan ID
                                 val response = apiService.getHistoryDetail("Bearer $it", id)
-                                // Pastikan response memiliki status "success" dan ambil data dari predictions
+                                // Log respons untuk debugging
+                                Log.d("DetailHistoryFragment", "Response: $response")
+
+                                // Pastikan response memiliki status "success"
                                 if (response.status == "success") {
-                                    displayPredictionDetail(response.predictions[0]) // Ambil predictions
+                                    // Ambil prediction dari response
+                                    val predictionDetail = response.prediction // Akses prediction langsung
+                                    if (predictionDetail != null) {
+                                        // Jika Anda ingin menambahkan ke list di ViewModel
+                                        // historyViewModel.addPrediction(predictionDetail) // Misalnya, jika Anda memiliki metode ini
+                                        displayPredictionDetail(predictionDetail) // Ambil predictions
+                                    } else {
+                                        Toast.makeText(requireContext(), "Data tidak ditemukan untuk ID: $id", Toast.LENGTH_SHORT).show()
+                                    }
                                 } else {
                                     Toast.makeText(requireContext(), "Data tidak ditemukan", Toast.LENGTH_SHORT).show()
                                 }
@@ -72,12 +87,24 @@ class DetailHistoryFragment : Fragment() {
             }
     }
 
+
+
+
     private fun displayPredictionDetail(prediction: PredictionHistory) {
         // Tampilkan detail di UI
         binding.diseaseTextView.text = "Kondisi Wajah: ${prediction.faceDisease}"
         binding.accuracyTextView.text = "Akurasi: ${prediction.diseaseAccuracy}"
-        binding.descriptionTextView.text = prediction.diseaseDescription
-        Glide.with(this).load(prediction.imageUrl).into(binding.historyImageView)
+        binding.descriptionTextView.text = "Deskripsi: ${prediction.diseaseDescription}"
+        // Log URL gambar untuk debugging
+        Log.d("DetailHistoryFragment", "Image URL: ${prediction.imageUrl}")
+
+        // Memuat gambar ke dalam ImageView
+        Glide.with(this)
+            .load(prediction.imageUrl) // Ambil URL gambar dari prediction
+            .error(R.drawable.ic_history) // Gambar default jika gagal memuat
+            .skipMemoryCache(true) // Lewati cache memori
+            .diskCacheStrategy(DiskCacheStrategy.NONE) // Lewati cache disk
+            .into(binding.historyImageView) // Muat gambar ke ImageView
 
         // Set up RecyclerView untuk herbal solutions
         setupHerbalSolutionsRecyclerView(prediction.recomendation.herbalSolutions ?: emptyList())

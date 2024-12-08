@@ -22,6 +22,18 @@ data class HistoryResponse(
     val predictions: List<PredictionHistory> // Ubah menjadi List<PredictionHistory>
 ) : Serializable
 
+data class PredictionHistoryResponse(
+    @SerializedName("status")
+    val status: String,
+
+    @SerializedName("email")
+    val email: String,
+
+    @SerializedName("prediction")
+    val prediction: PredictionHistory // Ini adalah objek PredictionHistory
+) : Serializable
+
+
 data class PredictionHistory(
     @SerializedName("disease_accuracy")
     val diseaseAccuracy: String,

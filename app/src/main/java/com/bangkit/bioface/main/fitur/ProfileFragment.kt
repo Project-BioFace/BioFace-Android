@@ -72,7 +72,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             // Handle item click
             val detailFragment = DetailHistoryFragment.newInstance(predictionId)
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, detailFragment)
+                .replace(R.id.fragmentContainer, detailFragment)
                 .addToBackStack(null)
                 .commit()
         }, { predictionId ->

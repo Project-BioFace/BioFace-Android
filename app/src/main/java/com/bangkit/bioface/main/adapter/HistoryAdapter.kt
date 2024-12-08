@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bangkit.bioface.R
 import com.bangkit.bioface.network.response.PredictionHistory
+import com.bumptech.glide.Glide
 
 class HistoryAdapter(
     private var predictions: List<PredictionHistory>,
@@ -46,6 +47,12 @@ class HistoryAdapter(
         fun bind(prediction: PredictionHistory) {
             itemView.findViewById<TextView>(R.id.faceDiseaseText).text = prediction.faceDisease
             itemView.findViewById<TextView>(R.id.timestampText).text = prediction.timestamp
+
+            // Memuat gambar ke dalam ImageView
+            val imageView = itemView.findViewById<ImageView>(R.id.icHistory)
+            Glide.with(itemView.context)
+                .load(prediction.imageUrl) // Ambil URL gambar dari prediction
+                .into(imageView) // Muat gambar ke ImageView
         }
     }
 }

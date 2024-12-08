@@ -9,6 +9,7 @@ import com.bangkit.bioface.network.response.BaseResponse
 import com.bangkit.bioface.network.response.DictItem
 import com.bangkit.bioface.network.response.HistoryResponse
 import com.bangkit.bioface.network.response.PredictionHistory
+import com.bangkit.bioface.network.response.PredictionHistoryResponse
 import com.bangkit.bioface.network.response.PredictionResponse
 import com.bangkit.bioface.network.response.ResponseArticleDetail
 import com.bangkit.bioface.network.response.ResponseArticlesList
@@ -45,7 +46,7 @@ interface ApiService {
 
     // Mendapatkan detail prediksi berdasarkan ID
     @GET("history/{id}")
-    suspend fun getHistoryDetail(@Header("Authorization") token: String, @Path("id") id: Int): HistoryResponse
+    suspend fun getHistoryDetail(@Header("Authorization") token: String, @Path("id") id: Int): PredictionHistoryResponse
 
     // Menghapus history berdasarkan ID
     @DELETE("history/{id}")
