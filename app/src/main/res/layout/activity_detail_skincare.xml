@@ -50,19 +50,10 @@
             android:text="Benefit : \nSkincare benefit"
             android:fontFamily="@font/poppinsregular"
             android:textSize="14sp"
+            android:justificationMode="inter_word"
             android:textColor="@color/black"
             android:lineSpacingExtra="4dp"
             android:layout_marginBottom="10dp"/>
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/skincareUse"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="How to use : \nHow to use skincare"-->
-        <!--            android:fontFamily="@font/poppinsregular"-->
-        <!--            android:textSize="14sp"-->
-        <!--            android:textColor="@color/black"-->
-        <!--            android:lineSpacingExtra="4dp"/>-->
 
         <Button
             android:id="@+id/btnBuySkincare"
@@ -81,8 +72,6 @@
             android:layout_gravity="center"
             android:indeterminateTint="@color/pinksecondary"
             android:visibility="gone" />
-
-
     </LinearLayout>
 
 

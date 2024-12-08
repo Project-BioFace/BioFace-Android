@@ -18,6 +18,7 @@ class FragmentSkincareViewModel : ViewModel() {
     val skincare: LiveData<List<SkincareItem>> = _filteredSkincare
     val errorMessage: LiveData<String> = _errorMessage
 
+
     fun getSkincare() {
         viewModelScope.launch {
             try {
@@ -25,19 +26,21 @@ class FragmentSkincareViewModel : ViewModel() {
                 if (response.isSuccessful && response.body() != null) {
                     val skincareList = response.body()?.data ?: emptyList()
                     if (skincareList.isEmpty()) {
-                        _errorMessage.value = "Skincare not found"
+                        _errorMessage.value = "No skincare items found"
                     } else {
                         _allSkincare.value = skincareList
                         _filteredSkincare.value = skincareList
                     }
                 } else {
-                    _errorMessage.value = "Failed to load Skincare"
+                    _errorMessage.value = "Failed to load skincare"
                 }
             } catch (e: Exception) {
                 _errorMessage.value = "Error: ${e.localizedMessage}"
             }
         }
     }
+
+
 
     // Tambahkan fungsi untuk melakukan filter
     fun searchSkincare(query: String) {

@@ -15,6 +15,8 @@ import com.bangkit.bioface.R
 import com.bangkit.bioface.network.response.SkincareItem
 import com.bangkit.bioface.viewmodel.DetailSkincareViewModel
 import com.bumptech.glide.Glide
+import java.text.NumberFormat
+import java.util.Locale
 
 class DetailSkincareActivity : AppCompatActivity() {
 
@@ -52,6 +54,7 @@ class DetailSkincareActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(DetailSkincareViewModel::class.java)
 
 
+
         val skincareId = intent.extras?.getInt(ARG_SKINCARE_ID, -1) ?: -1
 
         // Observasi skincare
@@ -83,6 +86,7 @@ class DetailSkincareActivity : AppCompatActivity() {
         // Tombol beli skincare
         buySkincare.setOnClickListener {
             val skincare = viewModel.skincare.value
+
             skincare?.let { item ->
                 val url = item.linkToBuy
                 if (url != null && url.isNotEmpty()) {
@@ -97,9 +101,12 @@ class DetailSkincareActivity : AppCompatActivity() {
     }
 
     private fun updateUI(skincare: SkincareItem) {
+        val priceFormatted = "Rp. " + NumberFormat.getNumberInstance(Locale("id", "ID")).format(skincare.price)
+        priceSkincare.text = priceFormatted
+
         nameSkincare.text = skincare.name
-        priceSkincare.text = "Rp. ${skincare.price}"
-        benefitSkincare.text = "Benefit: \n${skincare.benefit}"
+        priceSkincare.text = priceFormatted
+        benefitSkincare.text = skincare.description
 
         Glide.with(this)
             .load(skincare.image)

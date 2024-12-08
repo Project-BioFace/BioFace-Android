@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -64,16 +65,27 @@ class ArticlesFragment : Fragment(), ArticleAdapter.OnArticleClickListener {
 
     private fun observeViewModel() {
         viewModel.articles.observe(viewLifecycleOwner, Observer { articles ->
-            adapter.submitList(articles)
-            toggleLoading(false) // Sembunyikan loading setelah data dimuat
+            if (articles.isEmpty()) {
+                Toast.makeText(context, "No articles found", Toast.LENGTH_SHORT).show()
+            } else {
+                adapter.submitList(articles)
+            }
+            toggleLoading(false)
         })
 
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
             toggleLoading(isLoading)
         })
 
-        viewModel.getArticles() // Memulai proses pengambilan artikel
+        viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
+            errorMessage?.let {
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        viewModel.getArticles()
     }
+
 
     private fun setupSearchView() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

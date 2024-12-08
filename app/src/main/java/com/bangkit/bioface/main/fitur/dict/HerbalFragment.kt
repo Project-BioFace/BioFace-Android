@@ -60,10 +60,22 @@ class HerbalFragment : Fragment(), HerbalAdapter.OnDictClickListener {
 
     private fun observeViewModel() {
         viewModel.herbal.observe(viewLifecycleOwner, Observer { herbal ->
-            adapter.submitList(herbal)
+            if (herbal.isEmpty()) {
+                Toast.makeText(context, "No herbal items found", Toast.LENGTH_SHORT).show()
+            } else {
+                adapter.submitList(herbal)
+            }
         })
-        viewModel.getHerbal() // Memanggil fungsi untuk mendapatkan artikel
+
+        viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
+            errorMessage?.let {
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        viewModel.getHerbal() // Memanggil fungsi untuk mendapatkan data herbal
     }
+
 
     fun searchHerbal(query: String) {
         viewModel.searchHerbal(query)

@@ -25,6 +25,9 @@ data class SkincareItem(
 	@field:SerializedName("name")
 	val name: String? = null,
 
+	@field:SerializedName("description")
+	val description: String? = null,
+
 	@field:SerializedName("created_at")
 	val createdAt: String? = null,
 
@@ -32,8 +35,5 @@ data class SkincareItem(
 	val id: Int? = null,
 
 	@field:SerializedName("link_to_buy")
-	val linkToBuy: String? = null,
-
-	@field:SerializedName("benefit")
-	val benefit: String? = null
+	val linkToBuy: String? = null
 )

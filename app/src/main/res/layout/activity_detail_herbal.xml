@@ -2,6 +2,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/greenBg"
     android:fillViewport="true">
 
     <LinearLayout
@@ -38,6 +39,7 @@
             android:text="Benefit : \nHerbal benefit"
             android:fontFamily="@font/poppinsregular"
             android:textSize="14sp"
+            android:justificationMode="inter_word"
             android:textColor="@color/black"
             android:lineSpacingExtra="4dp"
             android:layout_marginBottom="10dp"/>
@@ -46,6 +48,7 @@
             android:id="@+id/herbalUse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
             android:text="How to use : \nHerbal benefit"
             android:fontFamily="@font/poppinsregular"
             android:textSize="14sp"
@@ -62,7 +65,6 @@
 
 
     </LinearLayout>
-
 
 
 </androidx.core.widget.NestedScrollView>

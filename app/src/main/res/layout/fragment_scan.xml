@@ -52,7 +52,7 @@
         android:background="@drawable/button_background"
         android:src="@drawable/ic_switch_camera"
         android:contentDescription="Beralih Kamera"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/captureButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/bone_white"/>
 
@@ -60,7 +60,7 @@
         android:id="@+id/captureButton"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="80dp"
         android:background="@drawable/button_background"
         android:src="@drawable/ic_capture"
         android:contentDescription="Tangkap Gambar"

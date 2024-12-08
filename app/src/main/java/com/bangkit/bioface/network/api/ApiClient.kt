@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
 
-    private const val BASE_URL = "https://bioface-userinteraction-api-dot-static-subject-442703-s7.et.r.appspot.com/"
+    private const val BASE_URL = "https://bioface.et.r.appspot.com/"
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()

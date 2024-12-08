@@ -62,10 +62,22 @@ class SkincareFragment : Fragment(), SkincareAdapter.OnSkincareClickListener {
 
     private fun observeViewModel() {
         viewModel.skincare.observe(viewLifecycleOwner, Observer { skincare ->
-            adapter.submitList(skincare)
+            if (skincare.isEmpty()) {
+                Toast.makeText(context, "No skincare items found", Toast.LENGTH_SHORT).show()
+            } else {
+                adapter.submitList(skincare)
+            }
         })
-        viewModel.getSkincare() // Memanggil fungsi untuk mendapatkan artikel
+
+        viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
+            errorMessage?.let {
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        viewModel.getSkincare()
     }
+
 
     fun searchSkincare(query: String) {
         viewModel.searchSkincare(query)

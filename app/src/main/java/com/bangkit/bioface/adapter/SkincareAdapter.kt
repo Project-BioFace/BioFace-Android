@@ -35,23 +35,33 @@ class SkincareAdapter(
         return SkincareViewHolder(view)
     }
 
-    // Mengikat data ke ViewHolder
     override fun onBindViewHolder(holder: SkincareViewHolder, position: Int) {
         val skincare = getItem(position)
-        holder.bind(skincare)
 
-        // Set click listener
-        holder.itemView.setOnClickListener {
-            skincare?.let { listener.onSkincareClick(it) }
+        // Tangani item khusus untuk "Not Found Skincare Item"
+        if (skincare.name == "Not Found Skincare Item") {
+            holder.bindNotFound()
+        } else {
+            holder.bind(skincare)
         }
 
-        // Set long click listener jika tersedia
-        onLongClickListener?.let { longClickListener ->
-            holder.itemView.setOnLongClickListener {
-                skincare?.let { longClickListener.onSkincareLongClick(it) } ?: false
+        // Nonaktifkan klik jika item adalah dummy
+        if (skincare.name == "Not Found Skincare Item") {
+            holder.itemView.setOnClickListener(null)
+            holder.itemView.setOnLongClickListener(null)
+        } else {
+            holder.itemView.setOnClickListener {
+                skincare?.let { listener.onSkincareClick(it) }
+            }
+            onLongClickListener?.let { longClickListener ->
+                holder.itemView.setOnLongClickListener {
+                    skincare?.let { longClickListener.onSkincareLongClick(it) } ?: false
+                }
             }
         }
     }
+
+
 
     private fun limitWords(text: String?, wordLimit: Int): String {
         if (text.isNullOrBlank()) return "Benefit tidak tersedia"
@@ -66,20 +76,37 @@ class SkincareAdapter(
         private val titleSkincare: TextView = itemView.findViewById(R.id.skincareTitle)
         private val benefitSkincare: TextView = itemView.findViewById(R.id.skincareBenefit)
 
-        // Metode untuk mengikat data ke view
-        fun bind(Skincare: SkincareItem) {
-            // Set judul artikel
-            titleSkincare.text = Skincare?.name ?: "Judul Tidak Tersedia"
 
-            // Set sumber artikel
-            benefitSkincare.text = "Benefit: ${limitWords(Skincare?.benefit, 10)}"
-
-            // Load gambar dengan Glide
-            Glide.with(itemView.context)
-                .load(Skincare?.image)
-                .transition(DrawableTransitionOptions.withCrossFade()) // Efek transisi
-                .into(imageSkincare)
+        fun bindNotFound() {
+            titleSkincare.text = "Not Found Skincare Item"
+            benefitSkincare.text = "No benefits available"
+            imageSkincare.setImageResource(R.drawable.ic_placeholder) // Gambar placeholder
         }
+
+
+        // Metode untuk mengikat data ke view
+        fun bind(skincare: SkincareItem) {
+            // Jika item memiliki nama "Not Found Skincare Item", tampilkan pesan khusus
+            if (skincare.name == "Not Found Skincare Item") {
+                titleSkincare.text = skincare.name
+                benefitSkincare.text = "No benefits available"
+                imageSkincare.setImageResource(R.drawable.ic_placeholder) // Gambar placeholder
+                itemView.isClickable = false // Nonaktifkan klik untuk item ini
+            } else {
+                // Set judul artikel
+                titleSkincare.text = skincare.name ?: "Judul Tidak Tersedia"
+
+                // Set sumber artikel
+                benefitSkincare.text = limitWords(skincare.description, 10)
+
+                // Load gambar dengan Glide
+                Glide.with(itemView.context)
+                    .load(skincare.image)
+                    .transition(DrawableTransitionOptions.withCrossFade()) // Efek transisi
+                    .into(imageSkincare)
+            }
+        }
+
 
     }
 

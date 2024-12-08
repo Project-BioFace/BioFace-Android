@@ -23,7 +23,6 @@ class DetailArticlesFragment : Fragment() {
     private lateinit var titleArticle: TextView
     private lateinit var sourceArticle: TextView
     private lateinit var contentArticle: TextView
-    private lateinit var createdAtArticle: TextView
     private lateinit var progressBar: ProgressBar
 
     companion object {
@@ -48,7 +47,6 @@ class DetailArticlesFragment : Fragment() {
         titleArticle = view.findViewById(R.id.articleTitle)
         sourceArticle = view.findViewById(R.id.articleSource)
         contentArticle = view.findViewById(R.id.articleContent)
-        createdAtArticle = view.findViewById(R.id.articleCreatedAt)
         progressBar = view.findViewById(R.id.progressBar)
 
         return view
@@ -93,7 +91,6 @@ class DetailArticlesFragment : Fragment() {
         titleArticle.text = article.title
         sourceArticle.text = "Source: ${article.source}"
         contentArticle.text = article.content
-        createdAtArticle.text = "Created at: ${article.createdAt}"
 
         Glide.with(requireContext())
             .load(article.image)

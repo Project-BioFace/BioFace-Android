@@ -17,24 +17,33 @@ class FragmentArticlesViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val articles: LiveData<List<ArticlesItem>> = _filteredArticles
     val isLoading: LiveData<Boolean> = _isLoading
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String> = _errorMessage
 
     fun getArticles() {
-        _isLoading.value = true // Menampilkan ProgressBar
+        _isLoading.value = true
         viewModelScope.launch {
             try {
                 val response: Response<ResponseArticlesList> = ApiClient.apiService.getArticles()
                 if (response.isSuccessful && response.body() != null) {
                     val articlesList = response.body()?.data ?: emptyList()
-                    _allArticles.value = articlesList
-                    _filteredArticles.value = articlesList
+                    if (articlesList.isEmpty()) {
+                        _errorMessage.value = "No articles found"
+                    } else {
+                        _allArticles.value = articlesList
+                        _filteredArticles.value = articlesList
+                    }
+                } else {
+                    _errorMessage.value = "Failed to load articles"
                 }
             } catch (e: Exception) {
-                // Log atau atur error handling
+                _errorMessage.value = "Error: ${e.localizedMessage}"
             } finally {
-                _isLoading.value = false // Sembunyikan ProgressBar
+                _isLoading.value = false
             }
         }
     }
+
 
     fun filterArticles(query: String) {
         val articles = _allArticles.value ?: emptyList()
