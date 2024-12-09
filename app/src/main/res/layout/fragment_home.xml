@@ -74,7 +74,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewHerbalHome"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="200dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="8dp"
             android:scrollbars="horizontal"
