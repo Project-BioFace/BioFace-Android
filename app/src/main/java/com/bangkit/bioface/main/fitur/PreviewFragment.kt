@@ -106,7 +106,7 @@ class PreviewFragment : Fragment() {
         if (token != null) {
             lifecycleScope.launch {
                 try {
-                    val apiService = ApiClient.apiService()
+                    val apiService = ApiClient.apiService1()
                     val predictionResponse = apiService.uploadImage("Bearer $token", multipartBody)
 
                     // Navigasi ke ResultFragment dengan hasil

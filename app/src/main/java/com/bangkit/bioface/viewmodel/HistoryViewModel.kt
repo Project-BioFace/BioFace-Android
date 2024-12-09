@@ -18,7 +18,7 @@ class HistoryViewModel : ViewModel() {
     fun fetchHistory() {
         viewModelScope.launch {
             try {
-                val apiService = ApiClient.apiService()
+                val apiService = ApiClient.apiService1()
                 val token = FirebaseAuth.getInstance().currentUser?.getIdToken(true)?.await()?.token
                 token?.let {
                     val response = apiService.getHistory("Bearer $it")
@@ -41,7 +41,7 @@ class HistoryViewModel : ViewModel() {
 
     // Menghapus history berdasarkan ID
     fun deleteHistory(predictionId: Int, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
-        val apiService = ApiClient.apiService()
+        val apiService = ApiClient.apiService1()
 
         FirebaseAuth.getInstance().currentUser?.getIdToken(true)
             ?.addOnCompleteListener { task ->
@@ -70,7 +70,7 @@ class HistoryViewModel : ViewModel() {
 
     // Menghapus semua history
     fun deleteAllHistory(onSuccess: () -> Unit, onFailure: (String) -> Unit) {
-        val apiService = ApiClient.apiService()
+        val apiService = ApiClient.apiService1()
 
         FirebaseAuth.getInstance().currentUser?.getIdToken(true)
             ?.addOnCompleteListener { task ->

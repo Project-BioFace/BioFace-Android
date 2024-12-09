@@ -46,7 +46,7 @@ class DetailHistoryFragment : Fragment() {
     }
 
     private fun fetchPredictionDetail(id: Int) {
-        val apiService = ApiClient.apiService()
+        val apiService = ApiClient.apiService1()
 
         // Mendapatkan token dari pengguna yang sedang login
         FirebaseAuth.getInstance().currentUser?.getIdToken(true)
