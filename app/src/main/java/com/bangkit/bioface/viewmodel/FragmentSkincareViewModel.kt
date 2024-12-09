@@ -22,7 +22,7 @@ class FragmentSkincareViewModel : ViewModel() {
     fun getSkincare() {
         viewModelScope.launch {
             try {
-                val response: Response<ResponseSkincareList> = ApiClient.apiService.getSkincareItems()
+                val response: Response<ResponseSkincareList> = ApiClient.apiService2().getSkincareItems()
                 if (response.isSuccessful && response.body() != null) {
                     val skincareList = response.body()?.data ?: emptyList()
                     if (skincareList.isEmpty()) {

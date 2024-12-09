@@ -32,7 +32,7 @@ class FragmentDetailArticleViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 // Memanggil API untuk mendapatkan artikel berdasarkan ID
-                val response: Response<ResponseArticleDetail> = ApiClient.apiService().getArticleById(id)
+                val response: Response<ResponseArticleDetail> = ApiClient.apiService2().getArticleById(id)
 
                 // Mengecek apakah response berhasil dan body tidak null
                 if (response.isSuccessful && response.body() != null) {

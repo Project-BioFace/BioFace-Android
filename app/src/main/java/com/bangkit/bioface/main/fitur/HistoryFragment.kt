@@ -22,9 +22,9 @@ class HistoryFragment : Fragment() {
     ): View? {
         binding = FragmentHistoryBinding.inflate(inflater, container, false)
         return binding.root
-    }}
+    }
 
-    /*override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = HistoryAdapter(scanResults) { scanResult ->
@@ -56,4 +56,4 @@ class HistoryFragment : Fragment() {
         adapter.notifyItemInserted(scanResults.size - 1)
         // Simpan data ke penyimpanan (jika perlu)
     }
-}*/
+}

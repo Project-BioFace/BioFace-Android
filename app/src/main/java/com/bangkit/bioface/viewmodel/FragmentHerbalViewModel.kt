@@ -22,7 +22,7 @@ class FragmentHerbalViewModel : ViewModel() {
     fun getHerbal() {
         viewModelScope.launch {
             try {
-                val response: Response<ResponseDictList> = ApiClient.apiService.getDictItems()
+                val response: Response<ResponseDictList> = ApiClient.apiService2().getDictItems()
                 Log.d("HerbalViewModel", "Response code: ${response.code()}")
                 Log.d("HerbalViewModel", "Response body: ${response.body()}")
                 Log.d("HerbalViewModel", "Response error: ${response.errorBody()?.string()}")

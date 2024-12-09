@@ -31,7 +31,7 @@ class DetailHerbalViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 // Memanggil API untuk mendapatkan skincare berdasarkan ID
-                val response: Response<ResponseDictDetail> = ApiClient.apiService.getDictItemById(id)
+                val response: Response<ResponseDictDetail> = ApiClient.apiService2().getDictItemById(id)
 
                 // Mengecek apakah response berhasil dan body tidak null
                 if (response.isSuccessful && response.body() != null) {
