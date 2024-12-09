@@ -14,29 +14,41 @@
 
         >
 
-        <!-- Welcome Card -->
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/welcome_card"
             android:padding="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginHorizontal="16dp"
-            android:gravity="start">
+            android:layout_marginHorizontal="16dp">
 
+            <!-- Image Section (moved to left) -->
+            <ImageView
+                android:id="@+id/img_bioface"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/biofacefix"
+                android:contentDescription="@string/bioface_image"
+                android:layout_margin="8dp" />
+
+            <!-- Welcome Text Section -->
             <LinearLayout
+                android:id="@+id/welcome_text_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:gravity="start">
+                android:layout_toEndOf="@id/img_bioface"
+                android:layout_centerVertical="true">
 
                 <TextView
                     android:id="@+id/tv_greeting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppinssemibold"
-                    android:textSize="16sp"
-                    android:textColor="@color/bone_white" />
+                    android:fontFamily="@font/poppinsbold"
+                    android:textSize="20sp"
+                    android:textColor="@color/greenText" />
 
                 <TextView
                     android:id="@+id/tv_welcome_message"
@@ -45,10 +57,25 @@
                     android:fontFamily="@font/poppinsregular"
                     android:text="Welcome to Bioface"
                     android:textSize="16sp"
-                    android:textColor="@color/bone_white"
-                    android:layout_marginTop="4dp" />
+                    android:textColor="@color/greenText"
+                    android:layout_marginTop="-2dp"/>
+
+                <TextView
+                    android:id="@+id/tv_welcome_bioface"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppinsregular"
+                    android:textStyle="italic"
+                    android:text="Healthy Solutions for Healthy Skin"
+                    android:textSize="12sp"
+                    android:textColor="@color/greenText"
+                    android:layout_marginTop="-4dp" />
+
+
             </LinearLayout>
-        </LinearLayout>
+        </RelativeLayout>
+
+
 
         <!-- ViewPager -->
         <androidx.viewpager.widget.ViewPager

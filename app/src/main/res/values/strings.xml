@@ -15,5 +15,6 @@
     <string name="history_icon">History Icon</string>
         <string name="email_empty_error">Email cannot be empty</string>
         <string name="email_invalid_error">Please enter a valid email address</string>
+    <string name="bioface_image">logo bioface</string>
 
 </resources>
