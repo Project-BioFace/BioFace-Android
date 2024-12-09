@@ -28,7 +28,7 @@ class DetailHerbalActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
 
     companion object {
-        private const val ARG_HERBAL_ID = "herbal_id"
+        const val ARG_HERBAL_ID = "herbal_id"
 
         fun newInstance(herbalId: Int): Bundle {
             val bundle = Bundle()

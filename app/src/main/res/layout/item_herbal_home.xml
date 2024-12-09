@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="170dp"
+    android:layout_height="185dp"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <!-- Gambar Produk -->
+        <ImageView
+            android:id="@+id/ivHerbalImage"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:scaleType="centerCrop"
+            />
+
+        <!-- Kategori Produk -->
+        <TextView
+            android:id="@+id/tvHerbal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Herbal"
+            android:textSize="12sp"
+            android:fontFamily="@font/poppinsregular"
+            android:textColor="#808080"
+            android:layout_marginTop="8dp" />
+
+        <!-- Nama Produk -->
+        <TextView
+            android:id="@+id/tvHerbalName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Herbal Title"
+            android:textSize="16sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -88,6 +88,6 @@
             android:text="Selesai"
             android:layout_gravity="center"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="60dp"/>
     </LinearLayout>
 </ScrollView>

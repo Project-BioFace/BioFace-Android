@@ -16,7 +16,7 @@
             android:id="@+id/herbalImage"
             android:background="@drawable/bg_rounded"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="400dp"
             android:scaleType="centerCrop"
             android:contentDescription="Herbal Image"
             android:layout_marginBottom="16dp"/>
@@ -52,6 +52,7 @@
             android:text="How to use : \nHerbal benefit"
             android:fontFamily="@font/poppinsregular"
             android:textSize="14sp"
+            android:paddingBottom="45dp"
             android:textColor="@color/black"
             android:lineSpacingExtra="4dp"/>
 

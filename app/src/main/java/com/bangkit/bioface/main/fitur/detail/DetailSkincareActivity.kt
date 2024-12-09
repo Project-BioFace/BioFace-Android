@@ -30,7 +30,7 @@ class DetailSkincareActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
 
     companion object {
-        private const val ARG_SKINCARE_ID = "skincare_id"
+        const val ARG_SKINCARE_ID = "skincare_id"
 
         fun newInstance(skincareId: Int): Bundle {
             val bundle = Bundle()

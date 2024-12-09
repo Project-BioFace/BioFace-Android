@@ -1,26 +1,33 @@
 package com.bangkit.bioface.main.adapter
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.cardview.widget.CardView
 import androidx.viewpager.widget.PagerAdapter
+import com.bangkit.bioface.R
 
 class BannerAdapter(private val banners: List<Int>) : PagerAdapter() {
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val imageView = ImageView(container.context)
+        val context = container.context
+
+        // Inflate layout containing CardView and ImageView
+        val layoutInflater = LayoutInflater.from(context)
+        val view = layoutInflater.inflate(R.layout.item_banner, container, false)
+
+        val cardView: CardView = view.findViewById(R.id.cardView)
+        val imageView: ImageView = view.findViewById(R.id.imageView)
+
+        // Set the image resource to ImageView
         imageView.setImageResource(banners[position])
-        imageView.scaleType = ImageView.ScaleType.CENTER_CROP
 
-        // Set width to create spacing effect
-        val layoutParams = ViewGroup.LayoutParams(
-            (container.width * 0.8).toInt(), // 80% of the container width
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
-        imageView.layoutParams = layoutParams
+        // Add the inflated view to the container (ViewPager)
+        container.addView(view)
 
-        container.addView(imageView)
-        return imageView
+        // Return the view
+        return view
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
@@ -35,4 +42,3 @@ class BannerAdapter(private val banners: List<Int>) : PagerAdapter() {
         return banners.size
     }
 }
-

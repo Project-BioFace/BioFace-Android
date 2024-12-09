@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.firebase.storage)
     implementation(libs.vision.common)
     implementation(libs.play.services.mlkit.face.detection)
+    implementation(libs.androidx.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

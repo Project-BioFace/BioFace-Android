@@ -12,6 +12,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
         android:scrollbars="vertical"
-        tools:listitem="@layout/item_herbal" />
+        tools:listitem="@layout/item_herbal"
+        android:paddingBottom="45dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

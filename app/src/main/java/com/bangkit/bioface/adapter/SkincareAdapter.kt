@@ -18,17 +18,16 @@ class SkincareAdapter(
     private val onLongClickListener: OnSkincareLongClickListener? = null
 ) : ListAdapter<SkincareItem, SkincareAdapter.SkincareViewHolder>(SkincareDiffCallback()) {
 
-    // Interface untuk click listener
     interface OnSkincareClickListener {
         fun onSkincareClick(skincare: SkincareItem)
     }
 
-    // Interface untuk long click listener (opsional)
+
     interface OnSkincareLongClickListener {
         fun onSkincareLongClick(skincare: SkincareItem): Boolean
     }
 
-    // Membuat ViewHolder baru
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SkincareViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_skincare, parent, false)
@@ -38,14 +37,12 @@ class SkincareAdapter(
     override fun onBindViewHolder(holder: SkincareViewHolder, position: Int) {
         val skincare = getItem(position)
 
-        // Tangani item khusus untuk "Not Found Skincare Item"
         if (skincare.name == "Not Found Skincare Item") {
             holder.bindNotFound()
         } else {
             holder.bind(skincare)
         }
 
-        // Nonaktifkan klik jika item adalah dummy
         if (skincare.name == "Not Found Skincare Item") {
             holder.itemView.setOnClickListener(null)
             holder.itemView.setOnLongClickListener(null)
@@ -69,9 +66,8 @@ class SkincareAdapter(
         return if (words.size <= wordLimit) text else words.take(wordLimit).joinToString(" ") + "..."
     }
 
-    // ViewHolder untuk item artikel
+
     inner class SkincareViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // Deklarasi view dalam item
         private val imageSkincare: ImageView = itemView.findViewById(R.id.skincareImage)
         private val titleSkincare: TextView = itemView.findViewById(R.id.skincareTitle)
         private val benefitSkincare: TextView = itemView.findViewById(R.id.skincareBenefit)
@@ -80,20 +76,19 @@ class SkincareAdapter(
         fun bindNotFound() {
             titleSkincare.text = "Not Found Skincare Item"
             benefitSkincare.text = "No benefits available"
-            imageSkincare.setImageResource(R.drawable.ic_placeholder) // Gambar placeholder
+            imageSkincare.setImageResource(R.drawable.ic_placeholder)
         }
 
 
-        // Metode untuk mengikat data ke view
+
         fun bind(skincare: SkincareItem) {
-            // Jika item memiliki nama "Not Found Skincare Item", tampilkan pesan khusus
+
             if (skincare.name == "Not Found Skincare Item") {
                 titleSkincare.text = skincare.name
                 benefitSkincare.text = "No benefits available"
-                imageSkincare.setImageResource(R.drawable.ic_placeholder) // Gambar placeholder
-                itemView.isClickable = false // Nonaktifkan klik untuk item ini
+                imageSkincare.setImageResource(R.drawable.ic_placeholder)
+                itemView.isClickable = false
             } else {
-                // Set judul artikel
                 titleSkincare.text = skincare.name ?: "Judul Tidak Tersedia"
 
                 // Set sumber artikel
@@ -102,7 +97,7 @@ class SkincareAdapter(
                 // Load gambar dengan Glide
                 Glide.with(itemView.context)
                     .load(skincare.image)
-                    .transition(DrawableTransitionOptions.withCrossFade()) // Efek transisi
+                    .transition(DrawableTransitionOptions.withCrossFade())
                     .into(imageSkincare)
             }
         }
