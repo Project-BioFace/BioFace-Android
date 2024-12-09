@@ -66,7 +66,7 @@ class ArticleAdapter(
             titleArticle.text = article?.title ?: "Judul Tidak Tersedia"
 
             // Set sumber artikel
-            sourceArticle.text = "Sumber: ${article?.source ?: "Tidak Diketahui"}"
+            sourceArticle.text = "Source: ${article?.source ?: "Tidak Diketahui"}"
 
             // Load gambar dengan Glide
             Glide.with(itemView.context)
@@ -75,15 +75,6 @@ class ArticleAdapter(
                 .into(imageArticle)
         }
 
-        // Metode untuk memformat tanggal (bisa disesuaikan)
-        private fun formatDate(dateString: String?): String {
-            return try {
-                // Contoh sederhana, bisa diganti dengan formatter yang lebih kompleks
-                dateString?.substring(0, 10) ?: "Tanggal Tidak Tersedia"
-            } catch (e: Exception) {
-                "Tanggal Tidak Tersedia"
-            }
-        }
     }
 
     // Callback untuk membandingkan item dalam list
@@ -99,17 +90,4 @@ class ArticleAdapter(
         }
     }
 
-    // Metode untuk memfilter list artikel
-    fun filterArticles(query: String) {
-        val filteredList = currentList.filter { article ->
-            article.title?.contains(query, ignoreCase = true) == true ||
-                    article.source?.contains(query, ignoreCase = true) == true
-        }
-        submitList(filteredList)
-    }
-
-    // Metode untuk mendapatkan total artikel
-    fun getArticleCount(): Int {
-        return currentList.size
-    }
 }

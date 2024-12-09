@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".main.auth.OtpActivity"
-        android:background="@color/white"
+        android:background="@color/greenBg"
         >
 
         <!-- OTP Illustration -->
@@ -29,7 +29,7 @@
             android:textSize="17sp"
             android:fontFamily="@font/poppinssemibold"
             android:gravity="center"
-            android:textColor="@color/black"
+            android:textColor="@color/greenText"
             android:layout_marginTop="20dp"
             />
 
@@ -61,7 +61,7 @@
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
                 android:inputType="number"
-                android:textColor="@color/black"
+                android:textColor="@color/greenText"
                 android:fontFamily="@font/poppinsregular"
                 android:maxLength="1"
                 android:id="@+id/otp1"
@@ -74,7 +74,7 @@
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
                 android:inputType="number"
-                android:textColor="@color/black"
+                android:textColor="@color/greenText"
                 android:fontFamily="@font/poppinsregular"
                 android:maxLength="1"
                 android:id="@+id/otp2"
@@ -87,7 +87,7 @@
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
                 android:inputType="number"
-                android:textColor="@color/black"
+                android:textColor="@color/greenText"
                 android:fontFamily="@font/poppinsregular"
                 android:maxLength="1"
                 android:id="@+id/otp3"
@@ -100,7 +100,7 @@
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
                 android:inputType="number"
-                android:textColor="@color/black"
+                android:textColor="@color/greenText"
                 android:fontFamily="@font/poppinsregular"
                 android:maxLength="1"
                 android:id="@+id/otp4"
@@ -113,7 +113,7 @@
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
                 android:inputType="number"
-                android:textColor="@color/black"
+                android:textColor="@color/greenText"
                 android:fontFamily="@font/poppinsregular"
                 android:maxLength="1"
                 android:id="@+id/otp5"
@@ -126,7 +126,7 @@
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
                 android:inputType="number"
-                android:textColor="@color/black"
+                android:textColor="@color/greenText"
                 android:fontFamily="@font/poppinsregular"
                 android:maxLength="1"
                 android:id="@+id/otp6"
@@ -147,6 +147,7 @@
                 android:layout_height="wrap_content"
                 android:text="Didn't receive the OTP?"
                 android:fontFamily="@font/poppinsregular"
+                android:textColor="@color/greenText"
                 android:textSize="12sp"/>
 
             <TextView
@@ -157,7 +158,7 @@
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/poppinssemibold"
                 android:textSize="12sp"
-                android:textColor="@color/pinksecondary"/>
+                android:textColor="@color/greenDark"/>
         </LinearLayout>
 
         <!-- Submit Button -->

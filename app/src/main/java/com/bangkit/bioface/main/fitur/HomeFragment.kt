@@ -1,24 +1,16 @@
 package com.bangkit.bioface.main.fitur
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.bangkit.bioface.R
 import com.bangkit.bioface.main.adapter.BannerAdapter
-import com.bangkit.bioface.main.fitur.itemhome.NaturalFragment
-import com.bangkit.bioface.main.fitur.itemhome.ProductFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 

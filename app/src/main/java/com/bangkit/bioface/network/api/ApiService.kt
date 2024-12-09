@@ -1,21 +1,17 @@
 package com.bangkit.bioface.network.api
 
-import com.bangkit.bioface.main.adapter.HerbalItem
 
-import com.bangkit.bioface.network.response.ArticlesItems
-import com.bangkit.bioface.main.adapter.ImageRequest
-import com.bangkit.bioface.network.response.ApiResponse
 import com.bangkit.bioface.network.response.BaseResponse
-import com.bangkit.bioface.network.response.DictItem
 import com.bangkit.bioface.network.response.HistoryResponse
-import com.bangkit.bioface.network.response.PredictionHistory
 import com.bangkit.bioface.network.response.PredictionHistoryResponse
 import com.bangkit.bioface.network.response.PredictionResponse
 import com.bangkit.bioface.network.response.ResponseArticleDetail
 import com.bangkit.bioface.network.response.ResponseArticlesList
-import com.bangkit.bioface.network.response.SkincareItem
 import okhttp3.MultipartBody
-import retrofit2.Call
+import com.bangkit.bioface.network.response.ResponseDictDetail
+import com.bangkit.bioface.network.response.ResponseDictList
+import com.bangkit.bioface.network.response.ResponseSkincareDetail
+import com.bangkit.bioface.network.response.ResponseSkincareList
 import retrofit2.Response
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -26,12 +22,6 @@ import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface ApiService {
-
-    @GET("natural") // Endpoint untuk kategori natural
-    fun getNaturalHerbs(): Call<List<HerbalItem>>
-
-    @GET("product") // Endpoint untuk kategori product
-    fun getProductHerbs(): Call<List<HerbalItem>>
 
     @Multipart
     @POST("prediction")
@@ -70,14 +60,14 @@ interface ApiService {
     suspend fun getArticles(): Response<ResponseArticlesList> // Menggunakan Response<ResponseArticles>
 
     @GET("bio/{id}")
-    suspend fun getSkinCareItemById(@Path("id") id: Int): Response<SkincareItem>  // Menggunakan suspend untuk coroutine
+    suspend fun getDictItemById(@Path("id") id: Int): Response<ResponseDictDetail>  // Menggunakan suspend untuk coroutine
 
     @GET("bio")
-    suspend fun getSkinCareItems(): Response<List<SkincareItem>>  // Menggunakan suspend untuk coroutine
+    suspend fun getDictItems(): Response<ResponseDictList> // Menggunakan suspend untuk coroutine
 
     @GET("biosk/{id}")
-    suspend fun getDictItemById(@Path("id") id: Int): Response<DictItem>  // Menggunakan suspend untuk coroutine
+    suspend fun getSkincareItemById(@Path("id") id: Int): Response<ResponseSkincareDetail>  // Menggunakan suspend untuk coroutine
 
     @GET("biosk")
-    suspend fun getDictItems(): Response<List<DictItem>>  // Menggunakan suspend untuk coroutine
+    suspend fun getSkincareItems(): Response<ResponseSkincareList>  // Menggunakan suspend untuk coroutine
 }

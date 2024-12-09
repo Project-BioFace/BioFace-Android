@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/greenBg"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Image -->
+        <ImageView
+            android:id="@+id/herbalImage"
+            android:background="@drawable/bg_rounded"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:contentDescription="Herbal Image"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/herbalTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Herbal Title"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppinsbold" />
+
+        <!-- Content -->
+        <TextView
+            android:id="@+id/herbalBenefit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Benefit : \nHerbal benefit"
+            android:fontFamily="@font/poppinsregular"
+            android:textSize="14sp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/black"
+            android:lineSpacingExtra="4dp"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/herbalUse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
+            android:text="How to use : \nHerbal benefit"
+            android:fontFamily="@font/poppinsregular"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:lineSpacingExtra="4dp"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/pinksecondary"
+            android:visibility="gone" />
+
+
+    </LinearLayout>
+
+
+</androidx.core.widget.NestedScrollView>

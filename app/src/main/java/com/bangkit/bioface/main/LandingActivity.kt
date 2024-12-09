@@ -3,10 +3,10 @@ package com.bangkit.bioface.main
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.bangkit.bioface.R
 import com.bangkit.bioface.main.auth.LoginActivity
 import com.bangkit.bioface.main.auth.RegisterActivity
 import com.bangkit.bioface.databinding.ActivityLandingBinding
-import com.bangkit.bioface.main.fitur.HomeFragment
 import com.google.firebase.auth.FirebaseAuth
 
 class LandingActivity : AppCompatActivity() {
@@ -32,12 +32,18 @@ class LandingActivity : AppCompatActivity() {
         binding.btnLogin1.setOnClickListener {
             val loginIntent = Intent(this, LoginActivity::class.java)
             startActivity(loginIntent)
+
+            // Transisi dengan animasi
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
         // Menangani klik tombol Register
         binding.btnRegis1.setOnClickListener {
             val registerIntent = Intent(this, RegisterActivity::class.java)
             startActivity(registerIntent)
+
+            // Transisi dengan animasi
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 
@@ -48,6 +54,10 @@ class LandingActivity : AppCompatActivity() {
             // Jika pengguna sudah login, langsung arahkan ke MainActivity (Home)
             val mainIntent = Intent(this, MainActivity::class.java)
             startActivity(mainIntent)
+
+            // Transisi dengan animasi
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+
             finish() // Menutup LandingActivity agar tidak kembali lagi setelah masuk ke Home
         }
     }

@@ -17,4 +17,11 @@
     <color name="navigation_background">#E90074</color>
 
     <color name="shimmer_placeholder_color">#E0E0E0</color>
+
+    <color name="greenBg">#F5FFF7</color>
+    <color name="greenDark">#69c538</color>
+    <color name="greenLight">#79da46</color>
+
+    <color name="greenText">#2A4846</color>
+    <color name="greenLightText">#ADBAB3</color>
 </resources>

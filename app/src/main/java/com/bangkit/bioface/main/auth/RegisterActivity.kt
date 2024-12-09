@@ -2,10 +2,15 @@ package com.bangkit.bioface.main.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.util.Patterns
+import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bangkit.bioface.R
 import com.bangkit.bioface.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
@@ -15,6 +20,10 @@ class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var passwordEditText: EditText
+    private lateinit var confirmPasswordEditText: EditText
+    private lateinit var passwordVisibilityToggle: ImageView
+    private lateinit var confirmPasswordVisibilityToggle: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +32,20 @@ class RegisterActivity : AppCompatActivity() {
 
         // Initialize Firebase Authentication
         auth = FirebaseAuth.getInstance()
+        passwordEditText = findViewById(R.id.r_edt_password)
+        confirmPasswordEditText = findViewById(R.id.r_edt_confirmPass)
+        passwordVisibilityToggle = findViewById(R.id.r_password_check)
+        confirmPasswordVisibilityToggle = findViewById(R.id.r_confimpass_check)
+
+        setupPasswordVisibilityToggle(
+            passwordEditText,
+            passwordVisibilityToggle
+        )
+
+        setupPasswordVisibilityToggle(
+            confirmPasswordEditText,
+            confirmPasswordVisibilityToggle
+        )
 
         // Menyembunyikan action bar
         supportActionBar?.hide()
@@ -81,6 +104,30 @@ class RegisterActivity : AppCompatActivity() {
                     checkEmailBeforeRegister(email, password, name)
                 }
             }
+        }
+    }
+
+    private fun setupPasswordVisibilityToggle(
+        editText: EditText,
+        visibilityToggle: ImageView
+    ) {
+        var isPasswordVisible = false
+
+        visibilityToggle.setOnClickListener {
+            if (isPasswordVisible) {
+                // Hide password
+                editText.transformationMethod = PasswordTransformationMethod.getInstance()
+                visibilityToggle.setImageResource(R.drawable.ic_visibility_off)
+                isPasswordVisible = false
+            } else {
+                // Show password
+                editText.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                visibilityToggle.setImageResource(R.drawable.ic_visibility)
+                isPasswordVisible = true
+            }
+
+            // Move cursor to the end of the text
+            editText.setSelection(editText.text.length)
         }
     }
 

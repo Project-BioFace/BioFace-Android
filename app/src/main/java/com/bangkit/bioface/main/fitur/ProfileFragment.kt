@@ -240,8 +240,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
 
-
-
     private fun stopShimmerEffect() {
         shimmerNameLayout.stopShimmer()
         shimmerEmailLayout.stopShimmer()

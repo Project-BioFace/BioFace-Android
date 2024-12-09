@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.BioFace" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="Theme.BioFace" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:screenOrientation">portrait</item>
         <item name="colorPrimary">@color/pinkprimary</item>
         <item name="colorSecondary">@color/pinksecondary</item>
+
+
     </style>
 </resources>

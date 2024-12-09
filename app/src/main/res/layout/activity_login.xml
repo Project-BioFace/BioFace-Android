@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/greenBg"
     tools:context=".main.auth.LoginActivity">
 
     <!-- Logo dan Text -->
@@ -18,13 +18,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="150dp">
+        android:layout_marginTop="110dp">
 
         <ImageView
             android:id="@+id/l_iv_logoLogin"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/ic_bio1"
+            android:src="@drawable/biofacefix"
             android:layout_marginEnd="5dp"
             />
 
@@ -40,7 +40,7 @@
                 android:text="Welcome to"
                 android:fontFamily="@font/poppinsbold"
                 android:textSize="25sp"
-                android:textColor="@color/pinkprimary"/>
+                android:textColor="@color/greenDark"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -49,7 +49,7 @@
                 android:fontFamily="@font/mhiora"
                 android:textStyle="bold"
                 android:textSize="47sp"
-                android:textColor="@color/pinkprimary"/>
+                android:textColor="@color/greenDark"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -61,7 +61,7 @@
         android:text="Healthy Solutions for Healthy Skin"
         android:fontFamily="@font/poppinsmedium"
         android:textSize="15sp"
-        android:textColor="@color/pinkprimary"
+        android:textColor="@color/greenDark"
         android:textStyle="italic"
         app:layout_constraintTop_toBottomOf="@id/logo"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,23 +85,50 @@
             android:layout_width="match_parent"
             android:layout_height="57dp"
             android:hint="Enter your email"
-            android:background="@drawable/button_shape2"
             android:textSize="15sp"
             android:fontFamily="@font/poppinsregular"
             android:paddingStart="20dp"
             android:inputType="textEmailAddress"/>
 
-        <EditText
-            android:id="@+id/l_edt_password"
+
+        <!-- Updated password EditText with visibility icon -->
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="57dp"
-            android:layout_marginTop="10dp"
-            android:hint="Enter your password"
-            android:background="@drawable/button_shape2"
-            android:textSize="15sp"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:id="@+id/l_edt_password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Enter your password"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppinsregular"
+                android:paddingStart="20dp"
+                android:paddingEnd="50dp"
+                android:inputType="textPassword"/>
+
+            <ImageView
+                android:id="@+id/password_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_visibility_off"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="Toggle password visibility"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/forgotPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/greenText"
             android:fontFamily="@font/poppinsregular"
-            android:paddingStart="20dp"
-            android:inputType="textPassword"/>
+            android:layout_marginTop="10dp"
+            android:textAlignment="textEnd"
+            android:text="Forgot Password?"
+            android:layout_marginEnd="10dp"/>
     </LinearLayout>
 
     <!-- Login Button -->
@@ -136,6 +163,7 @@
             android:layout_height="wrap_content"
             android:text="Don't have an account?"
             android:fontFamily="@font/poppinsregular"
+            android:textColor="@color/greenText"
             android:textSize="12sp"/>
 
         <TextView
@@ -146,7 +174,7 @@
             android:layout_marginStart="4dp"
             android:fontFamily="@font/poppinssemibold"
             android:textSize="12sp"
-            android:textColor="@color/pinksecondary"/>
+            android:textColor="@color/greenDark"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
