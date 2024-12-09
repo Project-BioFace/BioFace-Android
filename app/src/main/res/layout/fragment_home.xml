@@ -1,49 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".main.fitur.HomeFragment">
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Home Fragment" />
-
-    <!-- Search Bar -->
-    <EditText
-        android:id="@+id/et_search"
+    <!-- Welcome Card -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:background="@drawable/button_shape2"
-        android:drawableStart="@drawable/ic_search"
-        android:drawablePadding="8dp"
-        android:hint="Cari Herbal..."
-        android:padding="12dp"
-        android:layout_marginTop="120dp" />
-
-    <!-- TabLayout -->
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:background="@drawable/welcome_card"
+        android:padding="16dp"
+        android:layout_marginTop="40dp"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="184dp"
-        android:background="@color/bone_white"
-        app:tabIndicatorColor="@color/pinkprimary"
-        app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/pinkprimary"
-        app:tabTextColor="@color/black" />
+        android:gravity="start">
 
-    <!-- FrameLayout for Fragments -->
-    <FrameLayout
-        android:id="@+id/fragmentContainer"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_greeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hi, [Nama Pengguna]"
+                android:textSize="16sp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_welcome_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Selamat datang di aplikasi Bioface"
+                android:textSize="10sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Carousel for Banners -->
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="232dp" />
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/banner_background"
+        android:clipToPadding="false"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:paddingBottom="16dp" />
+
+</LinearLayout>
 
 
-</FrameLayout>

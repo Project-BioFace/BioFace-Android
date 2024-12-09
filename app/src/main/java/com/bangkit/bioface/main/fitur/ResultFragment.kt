@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bangkit.bioface.R
 import com.bangkit.bioface.databinding.FragmentResultBinding
 import com.bangkit.bioface.main.adapter.HerbalSolutionAdapter
 import com.bangkit.bioface.main.adapter.SkincareProductAdapter
@@ -48,9 +49,18 @@ class ResultFragment : Fragment() {
         setupSkincareProductsRecyclerView(predictionResponse.recomendation?.skincareProducts ?: emptyList())
 
         // Set up click listener untuk tombol selesai
+        // Set up click listener for the finish button
         binding.finishButton.setOnClickListener {
-            parentFragmentManager.popBackStack() // Kembali ke fragmen sebelumnya
+            // Create an instance of the target fragment
+            val targetFragment = ScanFragment()
+
+            // Replace the current fragment with the target fragment
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, targetFragment) // Use the correct container ID
+                .addToBackStack(null) // Optional: Add to back stack if you want to allow going back
+                .commit()
         }
+
     }
 
     private fun flipImage(image: Bitmap?): Bitmap? {
