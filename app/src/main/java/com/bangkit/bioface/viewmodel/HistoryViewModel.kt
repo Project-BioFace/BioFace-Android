@@ -37,8 +37,6 @@ class HistoryViewModel : ViewModel() {
 
 
 
-
-
     fun deleteHistory(predictionId: Int, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
         val apiService = ApiClient.apiService1()
 

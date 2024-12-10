@@ -118,15 +118,18 @@ class DetailHistoryFragment : Fragment() {
 
     private fun setupHerbalSolutionsRecyclerView(solutions: List<HerbalSolution>) {
         val adapter = HerbalSolutionAdapter(solutions)
-        binding.herbalSolutionsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.herbalSolutionsRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.herbalSolutionsRecyclerView.adapter = adapter
+        binding.herbalSolutionsRecyclerView.isNestedScrollingEnabled = false // Menghindari konflik dengan ScrollView
     }
 
     private fun setupSkincareProductsRecyclerView(products: List<SkincareProduct>) {
         val adapter = SkincareProductAdapter(products)
-        binding.skincareProductsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.skincareProductsRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.skincareProductsRecyclerView.adapter = adapter
+        binding.skincareProductsRecyclerView.isNestedScrollingEnabled = false // Menghindari konflik dengan ScrollView
     }
+
 
     companion object {
         private const val ARG_PREDICTION_ID = "arg_prediction_id"

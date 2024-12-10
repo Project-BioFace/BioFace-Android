@@ -36,7 +36,7 @@ class HomeViewModel : ViewModel() {
 
                 if (response.isSuccessful) {
                     // Limit to 5 items and handle potential null list
-                    val herbalItems = response.body()?.data?.take(5) ?: emptyList()
+                    val herbalItems = response.body()?.data?.shuffled()?.take(5) ?: emptyList()
                     _herbalList.value = herbalItems
                 } else {
                     _error.value = "Failed to load herbal items: ${response.message()}"
@@ -57,9 +57,9 @@ class HomeViewModel : ViewModel() {
                 val response = apiService.getSkincareItems()
 
                 if (response.isSuccessful) {
-                    // Limit to 5 items and handle potential null list
-                    val skincareItems = response.body()?.data?.take(5) ?: emptyList()
+                    val skincareItems = response.body()?.data?.shuffled()?.take(5) ?: emptyList()
                     _skincareList.value = skincareItems
+
                 } else {
                     _error.value = "Failed to load skincare items: ${response.message()}"
                 }

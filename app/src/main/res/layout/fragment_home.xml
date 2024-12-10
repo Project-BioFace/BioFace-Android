@@ -22,7 +22,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginHorizontal="16dp">
 
-            <!-- Image Section (moved to left) -->
+
             <ImageView
                 android:id="@+id/img_bioface"
                 android:layout_width="80dp"
@@ -33,7 +33,7 @@
                 android:contentDescription="@string/bioface_image"
                 android:layout_margin="8dp" />
 
-            <!-- Welcome Text Section -->
+
             <LinearLayout
                 android:id="@+id/welcome_text_container"
                 android:layout_width="wrap_content"
@@ -77,7 +77,7 @@
 
 
 
-        <!-- ViewPager -->
+
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
@@ -87,7 +87,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp" />
 
-        <!-- Herbal Section -->
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
             android:scrollbars="horizontal"
             tools:listitem="@layout/item_herbal_home" />
 
-        <!-- Skincare Section -->
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

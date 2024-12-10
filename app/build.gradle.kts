@@ -75,7 +75,7 @@ dependencies {
 
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
-    implementation ("com.github.bumptech.glide:glide:4.15.0")
+    implementation (libs.glide)
     implementation ("androidx.activity:activity-ktx:1.7.2")
     implementation ("com.github.yalantis:ucrop:2.2.8")
     implementation ("com.facebook.shimmer:shimmer:0.5.0")
