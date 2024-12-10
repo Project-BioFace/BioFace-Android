@@ -29,8 +29,7 @@ import java.io.InputStream
 
 class PreviewFragment : Fragment() {
     private lateinit var binding: FragmentPreviewBinding
-    private var capturedImage: Bitmap? = null
-    private var currentImageUri: Uri? = null // Menyimpan URI gambar
+    private var currentImageUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,54 +43,44 @@ class PreviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Ambil gambar dari argumen
-        capturedImage = arguments?.getParcelable(ARG_IMAGE)
-        currentImageUri = arguments?.getParcelable(ARG_IMAGE_URI) // Ambil URI jika ada
+        currentImageUri = arguments?.getParcelable(ARG_IMAGE_URI)
 
         // Tampilkan gambar di ImageView
-        binding.imageView.setImageBitmap(capturedImage)
+        currentImageUri?.let { uri ->
+            binding.imageView.setImageURI(uri)
+        }
 
         // Set up click listeners
         binding.retakeButton.setOnClickListener {
-            // Kembali ke ScanFragment
-            parentFragmentManager.popBackStack() // Kembali ke fragmen sebelumnya
+            parentFragmentManager.popBackStack()
         }
 
         binding.scanButton.setOnClickListener {
-            // Proses gambar menggunakan model AI
             processImage(currentImageUri)
         }
     }
 
     private fun processImage(imageUri: Uri?) {
         if (imageUri != null) {
-            // Tampilkan ProgressBar dan TextView
             binding.progressBar.visibility = View.VISIBLE
             binding.progressText.visibility = View.VISIBLE
             binding.progressText.text = "Processing images..."
 
-            // Konversi URI gambar ke file
             val imageFile = uriToFile(imageUri, requireContext()).reduceFileImage()
 
-            // Tambahkan log untuk memeriksa file gambar
             Log.d("PreviewFragment", "Image File Path: ${imageFile.absolutePath}, Size: ${imageFile.length()} bytes")
 
             val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
             val multipartBody = MultipartBody.Part.createFormData("image", imageFile.name, requestImageFile)
 
-
-            // Mendapatkan token dari pengguna yang sedang login
             FirebaseAuth.getInstance().currentUser?.getIdToken(true)
                 ?.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val token = task.result?.token
-                        // Kirim permintaan ke API dengan token
                         sendImageToApi(token, multipartBody)
                     } else {
-                        // Tangani kesalahan jika tidak dapat mendapatkan token
                         Log.e("Auth", "Failed to get token: ${task.exception?.message}")
                         Toast.makeText(requireContext(), "Failed to get token", Toast.LENGTH_SHORT).show()
-                        // Sembunyikan ProgressBar
                         binding.progressBar.visibility = View.GONE
                         binding.progressText.visibility = View.GONE
                     }
@@ -101,7 +90,6 @@ class PreviewFragment : Fragment() {
         }
     }
 
-
     private fun sendImageToApi(token: String?, multipartBody: MultipartBody.Part) {
         if (token != null) {
             lifecycleScope.launch {
@@ -109,7 +97,6 @@ class PreviewFragment : Fragment() {
                     val apiService = ApiClient.apiService1()
                     val predictionResponse = apiService.uploadImage("Bearer $token", multipartBody)
 
-                    // Navigasi ke ResultFragment dengan hasil
                     navigateToResultFragment(predictionResponse)
                 } catch (e: HttpException) {
                     val errorResponse = e.response()?.errorBody()?.string()
@@ -118,6 +105,9 @@ class PreviewFragment : Fragment() {
                 } catch (e: Exception) {
                     e.printStackTrace()
                     Toast.makeText(requireContext(), "Something went wrong: ${e.message}", Toast.LENGTH_SHORT).show()
+                } finally {
+                    binding.progressBar.visibility = View.GONE
+                    binding.progressText.visibility = View.GONE
                 }
             }
         } else {
@@ -125,18 +115,13 @@ class PreviewFragment : Fragment() {
         }
     }
 
-
-
-
-
     private fun navigateToResultFragment(predictionResponse: PredictionResponse) {
-        val resultFragment = ResultFragment.newInstance(capturedImage, predictionResponse)
+        val resultFragment = ResultFragment.newInstance(currentImageUri, predictionResponse)
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, resultFragment)
             .addToBackStack(null)
             .commit()
     }
-
     private fun uriToFile(imageUri: Uri, context: Context): File {
         val myFile = createCustomTempFile(context)
         val inputStream = context.contentResolver.openInputStream(imageUri) as InputStream
@@ -172,14 +157,12 @@ class PreviewFragment : Fragment() {
     }
 
     companion object {
-        private const val ARG_IMAGE = "arg_image"
-        private const val ARG_IMAGE_URI = "arg_image_uri" // Tambahkan argumen untuk URI
+        private const val ARG_IMAGE_URI = "arg_image_uri"
 
-        fun newInstance(image: Bitmap?, imageUri: Uri?): PreviewFragment {
+        fun newInstance(imageUri: Uri): PreviewFragment {
             val fragment = PreviewFragment()
             val args = Bundle()
-            args.putParcelable(ARG_IMAGE, image)
-            args.putParcelable(ARG_IMAGE_URI, imageUri) // Simpan URI
+            args.putParcelable(ARG_IMAGE_URI, imageUri)
             fragment.arguments = args
             return fragment
         }

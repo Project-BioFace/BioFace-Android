@@ -58,9 +58,8 @@ class ScanFragment : Fragment() {
             toggleCamera()
         }
         binding.captureButton.setOnClickListener {
-            captureImage() // Ubah ke captureImage
+            captureImage()
         }
-        //Ambil dari Galeri
         binding.imageFromGallery.setOnClickListener {
             openGallery()
         }
@@ -71,47 +70,35 @@ class ScanFragment : Fragment() {
         startActivityForResult(intent, requestCodeGallery)
     }
 
-
-
     @OptIn(ExperimentalGetImage::class)
     private fun captureImage() {
-        // Mengambil gambar menggunakan ImageCapture
-        val file = createImageFile() // Buat file untuk menyimpan gambar
+        val file = createImageFile()
         val outputOptions = ImageCapture.OutputFileOptions.Builder(file).build()
 
-        imageCapture.takePicture(outputOptions, ContextCompat.getMainExecutor(requireContext()), object : ImageCapture.OnImageSavedCallback {
-            override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                // Gambar berhasil disimpan, lakukan pemrosesan
-                val file = outputFileResults.savedUri?.let { uri ->
-                    // Dapatkan bitmap dari file yang disimpan
-                    val bitmap = BitmapFactory.decodeFile(uri.path)
-                    // Navigasi ke PreviewFragment dengan bitmap dan URI
-                    navigateToPreviewFragment(bitmap, uri) // Pastikan untuk mengirimkan URI
-                } ?: run {
-                    Log.e("ScanFragment", "Error: savedUri is null")
+        imageCapture.takePicture(outputOptions, ContextCompat.getMainExecutor(requireContext()),
+            object : ImageCapture.OnImageSavedCallback {
+                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                    val uri = outputFileResults.savedUri ?: Uri.fromFile(file)
+                    navigateToPreviewFragment(uri)
+                }
+
+                override fun onError(exception: ImageCaptureException) {
+                    Log.e("ScanFragment", "Error capturing image: ${exception.message}")
                     Toast.makeText(requireContext(), "Failed to take picture", Toast.LENGTH_SHORT).show()
                 }
-            }
-
-            override fun onError(exception: ImageCaptureException) {
-                Log.e("ScanFragment", "Error capturing image: ${exception.message}")
-                Toast.makeText(requireContext(), "Failed to take picture", Toast.LENGTH_SHORT).show()
-            }
-        })
-
+            })
     }
 
     private fun createImageFile(): File {
-        // Buat file untuk menyimpan gambar
         val storageDir = requireContext().getExternalFilesDir(null)
         return File.createTempFile("captured_image_", ".jpg", storageDir)
     }
 
-    private fun navigateToPreviewFragment(image: Bitmap?, imageUri: Uri?) {
-        val previewFragment = PreviewFragment.newInstance(image, imageUri) // Pastikan untuk mengirimkan imageUri
+    private fun navigateToPreviewFragment(imageUri: Uri) {
+        val previewFragment = PreviewFragment.newInstance(imageUri)
         parentFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, previewFragment) // Ganti dengan ID container yang sesuai
-            .addToBackStack(null) // Tambahkan ke back stack jika ingin kembali
+            .replace(R.id.fragmentContainer, previewFragment)
+            .addToBackStack(null)
             .commit()
     }
 
@@ -203,9 +190,7 @@ class ScanFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == requestCodeGallery && resultCode == Activity.RESULT_OK) {
             data?.data?.let { uri ->
-                // Dapatkan bitmap dari URI dan navigasi ke PreviewFragment
-                val bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, uri)
-                navigateToPreviewFragment(bitmap, uri)
+                navigateToPreviewFragment(uri)
             }
         }
     }
