@@ -15,7 +15,7 @@
             android:id="@+id/historyImageView"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="fitCenter" />
 
         <TextView
             android:id="@+id/diseaseTextView"
