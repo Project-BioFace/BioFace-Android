@@ -8,6 +8,7 @@
     app:cardCornerRadius="16dp"
     app:cardElevation="4dp"
     app:cardBackgroundColor="@color/greenBg"
+    android:scrollbars="none"
     tools:context=".main.fitur.DictionaryFragment">
 
     <!-- ConstraintLayout untuk mengatur image dan teks -->

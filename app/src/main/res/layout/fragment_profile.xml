@@ -127,7 +127,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/historyCard"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/profileEmail"
         app:layout_constraintStart_toStartOf="parent"

@@ -45,7 +45,7 @@
         android:layout_below="@id/subtitle"
         android:layout_centerHorizontal="true"
         android:width="280dp"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="120dp"
         android:background="@drawable/button_shape"
         android:textSize="17sp"
         android:id="@+id/btn_login1"

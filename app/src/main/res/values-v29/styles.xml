@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="Theme.BioFace" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:screenOrientation">portrait</item>
+        <item name="android:forceDarkAllowed">false</item>
 
 
-    </style>
-
-    <style name="roundedImage" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">20dp</item>
-        <item name="color">@color/white</item>
     </style>
 </resources>

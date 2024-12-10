@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_margin="16dp"
-            android:scaleType="fitCenter" />
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/diseaseTextView"
@@ -89,7 +89,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:scrollbars="horizontal"
+                    android:scrollbars="none"
                     tools:listitem="@layout/item_herbal_solution"
                     />
             </LinearLayout>
@@ -124,7 +124,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:scrollbars="horizontal"/>
+                    android:scrollbars="none"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
