@@ -58,6 +58,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/bone_white"/>
 
+    <!-- Tombol untuk Beralih Kamera -->
+    <ImageButton
+        android:id="@+id/imageFromGallery"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/button_background"
+        android:src="@drawable/ic_image"
+        android:contentDescription="Upload dari Galeri"
+        app:layout_constraintBottom_toBottomOf="@id/captureButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/bone_white"/>
+
     <ImageButton
         android:id="@+id/captureButton"
         android:layout_width="70dp"

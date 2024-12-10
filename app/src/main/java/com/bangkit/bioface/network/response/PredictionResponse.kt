@@ -48,7 +48,7 @@ data class PredictionHistory(
     val id: Int,
 
     @SerializedName("image_url")
-    val imageUrl: String,
+    val imageUrl: String? = null,
 
     @SerializedName("prediction_detail")
     val predictionDetail: PredictionDetailHistory,

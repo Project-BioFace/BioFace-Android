@@ -1,10 +1,13 @@
 package com.bangkit.bioface.main.fitur
 
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -34,6 +37,7 @@ class ScanFragment : Fragment() {
     private lateinit var faceDetector: FaceDetector
     private var cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
     private val requestCodeCamera = 1
+    private val requestCodeGallery = 2
     private lateinit var imageCapture: ImageCapture
 
     override fun onCreateView(
@@ -56,7 +60,18 @@ class ScanFragment : Fragment() {
         binding.captureButton.setOnClickListener {
             captureImage() // Ubah ke captureImage
         }
+        //Ambil dari Galeri
+        binding.imageFromGallery.setOnClickListener {
+            openGallery()
+        }
     }
+
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, requestCodeGallery)
+    }
+
+
 
     @OptIn(ExperimentalGetImage::class)
     private fun captureImage() {
@@ -181,6 +196,17 @@ class ScanFragment : Fragment() {
             )
         } else {
             startCamera()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == requestCodeGallery && resultCode == Activity.RESULT_OK) {
+            data?.data?.let { uri ->
+                // Dapatkan bitmap dari URI dan navigasi ke PreviewFragment
+                val bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, uri)
+                navigateToPreviewFragment(bitmap, uri)
+            }
         }
     }
 
