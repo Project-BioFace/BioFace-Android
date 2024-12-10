@@ -68,7 +68,7 @@ class PreviewFragment : Fragment() {
             // Tampilkan ProgressBar dan TextView
             binding.progressBar.visibility = View.VISIBLE
             binding.progressText.visibility = View.VISIBLE
-            binding.progressText.text = "Memproses gambar..."
+            binding.progressText.text = "Processing images..."
 
             // Konversi URI gambar ke file
             val imageFile = uriToFile(imageUri, requireContext()).reduceFileImage()
@@ -90,14 +90,14 @@ class PreviewFragment : Fragment() {
                     } else {
                         // Tangani kesalahan jika tidak dapat mendapatkan token
                         Log.e("Auth", "Failed to get token: ${task.exception?.message}")
-                        Toast.makeText(requireContext(), "Gagal mendapatkan token", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Failed to get token", Toast.LENGTH_SHORT).show()
                         // Sembunyikan ProgressBar
                         binding.progressBar.visibility = View.GONE
                         binding.progressText.visibility = View.GONE
                     }
                 }
         } else {
-            Toast.makeText(requireContext(), "Gambar tidak tersedia untuk diproses", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Image not available for processing", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -117,11 +117,11 @@ class PreviewFragment : Fragment() {
                     Toast.makeText(requireContext(), "Error: $errorResponse", Toast.LENGTH_SHORT).show()
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    Toast.makeText(requireContext(), "Terjadi kesalahan: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Something went wrong: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         } else {
-            Toast.makeText(requireContext(), "Token tidak valid", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Failed to get token", Toast.LENGTH_SHORT).show()
         }
     }
 

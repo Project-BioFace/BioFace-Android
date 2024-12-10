@@ -21,6 +21,7 @@ class ResultFragment : Fragment() {
     private var capturedImage: Bitmap? = null
     private lateinit var predictionResponse: PredictionResponse
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -75,24 +76,24 @@ class ResultFragment : Fragment() {
     }
 
     private fun displayResults() {
-        binding.conditionTextView.text = "Kondisi Wajah: ${predictionResponse.faceDisease ?: "Tidak ada data"}"
-        binding.diseaseDescriptionTextView.text = predictionResponse.diseaseDescription ?: "Tidak ada deskripsi"
-        binding.diseaseAccuracyTextView.text = "Akurasi: ${predictionResponse.diseaseAccuracy ?: "Tidak ada akurasi"}"
+        binding.conditionTextView.text = "Face Condition:\n${predictionResponse.faceDisease ?: "No data found"}"
+        binding.diseaseDescriptionTextView.text = "Description:\n${predictionResponse.diseaseDescription ?: "No description"}"
+        binding.diseaseAccuracyTextView.text = "Accuration:\n${predictionResponse.diseaseAccuracy ?: "No accuracy"}"
         // Menampilkan causes
         val causes = predictionResponse.predictionDetail?.causes
         binding.causesTextView.text = if (causes.isNullOrEmpty()) {
-            "Tidak ada penyebab"
+            "No Causes"
         } else {
-            "Penyebab: ${causes.joinToString(", ")}"
+            "Causes:\n${causes.joinToString(", ")}"
         }
 
         // Menampilkan detail disease accuracy
         val detailAccuracy = predictionResponse.predictionDetail?.detailDiseaseAccuracy
         binding.predictionDetailTextView.text = if (detailAccuracy.isNullOrEmpty()) {
-            "Tidak ada detail akurasi"
+            "No accuracy details"
         } else {
             val accuracyList = detailAccuracy.map { "${it.key}: ${it.value}" }
-            "Detail Akurasi: ${accuracyList.joinToString(", ")}"
+            "Causes Detail:\n${accuracyList.joinToString(", ")}"
         }
     }
 

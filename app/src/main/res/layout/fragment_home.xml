@@ -125,7 +125,7 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="8dp"
             android:scrollbars="horizontal"
-            android:layout_marginBottom="70dp"
+            android:layout_marginBottom="100dp"
             tools:listitem="@layout/item_skincare_home"
             />
 

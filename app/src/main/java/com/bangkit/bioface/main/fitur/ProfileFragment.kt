@@ -1,5 +1,6 @@
 package com.bangkit.bioface.main.fitur
 
+import android.annotation.SuppressLint
 import android.app.Activity
 
 import android.content.Intent
@@ -79,8 +80,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             // Handle delete click
             historyViewModel.deleteHistory(predictionId, {
                 // Callback onSuccess
-                Toast.makeText(requireContext(), "History dengan ID $predictionId telah dihapus", Toast.LENGTH_SHORT).show()
-                historyViewModel.fetchHistory() // Memperbarui daftar history setelah dihapus
+                Toast.makeText(requireContext(), "One history has been deleted", Toast.LENGTH_SHORT).show()
+
+                // Reload fragment untuk memperbarui data
+                reloadFragment()
             }, { errorMessage ->
                 // Callback onFailure
                 Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
@@ -89,6 +92,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         historyRecyclerView.adapter = historyAdapter
 
+        // Observasi LiveData dari ViewModel
         historyViewModel.historyList.observe(viewLifecycleOwner) { predictions ->
             if (predictions.isEmpty()) {
                 noHistoryTextView.visibility = View.VISIBLE
@@ -106,9 +110,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         // Tambahkan listener untuk menghapus semua history
         view.findViewById<TextView>(R.id.tvHapusHistory).setOnClickListener {
             historyViewModel.deleteAllHistory({
-                Toast.makeText(requireContext(), "Semua history telah dihapus", Toast.LENGTH_SHORT).show()
-                // Panggil fetchHistory untuk memperbarui tampilan setelah penghapusan
-                historyViewModel.fetchHistory()
+                Toast.makeText(requireContext(), "All history has been deleted", Toast.LENGTH_SHORT).show()
+                // Reload fragment untuk memperbarui tampilan setelah penghapusan
+                reloadFragment()
             }, { errorMessage ->
                 Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
             })
@@ -139,6 +143,18 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         // Click to change profile picture
         editIcon.setOnClickListener { showImagePickerOptions() }
+    }
+
+    // Fungsi untuk mereload fragment
+    @SuppressLint("DetachAndAttachSameFragment")
+    private fun reloadFragment() {
+        val fragment = parentFragmentManager.findFragmentById(R.id.fragmentContainer)
+        if (fragment != null) {
+            parentFragmentManager.beginTransaction()
+                .detach(fragment) // Melepaskan fragment
+                .attach(fragment) // Menyambungkan kembali fragment
+                .commit()
+        }
     }
 
     private fun fetchUserData() {

@@ -133,3 +133,4 @@ data class SkincareProduct(
     @SerializedName("imageUrl")
     var imageUrl: String? = null
 ) : Serializable
+

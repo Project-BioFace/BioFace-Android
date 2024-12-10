@@ -39,7 +39,6 @@ class HistoryViewModel : ViewModel() {
 
 
 
-    // Menghapus history berdasarkan ID
     fun deleteHistory(predictionId: Int, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
         val apiService = ApiClient.apiService1()
 
@@ -51,10 +50,11 @@ class HistoryViewModel : ViewModel() {
                         viewModelScope.launch {
                             try {
                                 val response = apiService.deletePredictionHistory("Bearer $it", predictionId)
-                                if (response.status == "success") {
+                                if (response.status == "Success") {
                                     onSuccess() // Panggil callback sukses
+                                    fetchHistory() // Panggil fetchHistory untuk memperbarui data setelah penghapusan
                                 } else {
-                                    onFailure("Gagal menghapus history") // Panggil callback gagal
+                                    onFailure("Gagal menghapus history: ${response.message ?: "Tidak ada pesan"}") // Panggil callback gagal
                                 }
                             } catch (e: Exception) {
                                 e.printStackTrace()
@@ -68,6 +68,7 @@ class HistoryViewModel : ViewModel() {
             }
     }
 
+
     // Menghapus semua history
     fun deleteAllHistory(onSuccess: () -> Unit, onFailure: (String) -> Unit) {
         val apiService = ApiClient.apiService1()
@@ -80,8 +81,9 @@ class HistoryViewModel : ViewModel() {
                         viewModelScope.launch {
                             try {
                                 val response = apiService.deleteAllHistory("Bearer $it")
-                                if (response.status == "success") {
+                                if (response.status == "Success") {
                                     onSuccess() // Panggil callback sukses
+                                    fetchHistory()
                                 } else {
                                     onFailure("Gagal menghapus semua history") // Panggil callback gagal
                                 }

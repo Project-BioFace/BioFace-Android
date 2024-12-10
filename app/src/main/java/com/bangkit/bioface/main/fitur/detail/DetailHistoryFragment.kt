@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -70,19 +69,19 @@ class DetailHistoryFragment : Fragment() {
                                         // historyViewModel.addPrediction(predictionDetail) // Misalnya, jika Anda memiliki metode ini
                                         displayPredictionDetail(predictionDetail) // Ambil predictions
                                     } else {
-                                        Toast.makeText(requireContext(), "Data tidak ditemukan untuk ID: $id", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(requireContext(), "No data found for ID: $id", Toast.LENGTH_SHORT).show()
                                     }
                                 } else {
-                                    Toast.makeText(requireContext(), "Data tidak ditemukan", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(requireContext(), "Data not found", Toast.LENGTH_SHORT).show()
                                 }
                             } catch (e: Exception) {
                                 e.printStackTrace()
-                                Toast.makeText(requireContext(), "Terjadi kesalahan: ${e.message}", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), "An error occurred: ${e.message}", Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
                 } else {
-                    Toast.makeText(requireContext(), "Gagal mendapatkan token", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Failed to get token", Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -92,16 +91,15 @@ class DetailHistoryFragment : Fragment() {
 
     private fun displayPredictionDetail(prediction: PredictionHistory) {
         // Tampilkan detail di UI
-        binding.diseaseTextView.text = "Kondisi Wajah: ${prediction.faceDisease}"
-        binding.accuracyTextView.text = "Akurasi: ${prediction.diseaseAccuracy}"
-        binding.descriptionTextView.text = "Deskripsi: ${prediction.diseaseDescription}"
+        binding.diseaseTextView.text = "Face Condition:\n${prediction.faceDisease}"
+        binding.accuracyTextView.text = "Accuracy:\n${prediction.diseaseAccuracy}"
+        binding.descriptionTextView.text = "Description:\n${prediction.diseaseDescription}"
         // Log URL gambar untuk debugging
         Log.d("DetailHistoryFragment", "Image URL: ${prediction.imageUrl}")
 
         // Memuat gambar ke dalam ImageView
         Glide.with(this)
             .load(prediction.imageUrl) // Ambil URL gambar dari prediction
-            .error(R.drawable.ic_history) // Gambar default jika gagal memuat
             .skipMemoryCache(true) // Lewati cache memori
             .diskCacheStrategy(DiskCacheStrategy.NONE) // Lewati cache disk
             .into(binding.historyImageView) // Muat gambar ke ImageView

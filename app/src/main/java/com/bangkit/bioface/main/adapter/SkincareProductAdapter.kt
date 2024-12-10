@@ -14,7 +14,6 @@ class SkincareProductAdapter(private val products: List<SkincareProduct>) : Recy
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nameTextView: TextView = itemView.findViewById(R.id.skincareProductName)
-        val descriptionTextView: TextView = itemView.findViewById(R.id.skincareProductDescription)
         val imageView: ImageView = itemView.findViewById(R.id.skincareProductImage)
     }
 
@@ -26,8 +25,7 @@ class SkincareProductAdapter(private val products: List<SkincareProduct>) : Recy
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = products[position]
         holder.nameTextView.text = product.name
-        // Jika ada deskripsi, Anda bisa menambahkannya di sini
-        holder.descriptionTextView.text = "Deskripsi produk" // Ganti dengan deskripsi jika ada
+
         // Load image using a library like Glide or Picasso
         Glide.with(holder.itemView.context).load(product.imageUrl).into(holder.imageView)
     }

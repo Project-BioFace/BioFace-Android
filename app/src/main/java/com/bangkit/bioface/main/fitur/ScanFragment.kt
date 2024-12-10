@@ -74,13 +74,13 @@ class ScanFragment : Fragment() {
                     navigateToPreviewFragment(bitmap, uri) // Pastikan untuk mengirimkan URI
                 } ?: run {
                     Log.e("ScanFragment", "Error: savedUri is null")
-                    Toast.makeText(requireContext(), "Gagal mengambil gambar", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Failed to take picture", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onError(exception: ImageCaptureException) {
                 Log.e("ScanFragment", "Error capturing image: ${exception.message}")
-                Toast.makeText(requireContext(), "Gagal mengambil gambar", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Failed to take picture", Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -130,10 +130,10 @@ class ScanFragment : Fragment() {
                     faceDetector.process(inputImage)
                         .addOnSuccessListener { faces ->
                             if (faces.isNotEmpty()) {
-                                binding.instructionText.text = "Wajah terdeteksi! 😊"
+                                binding.instructionText.text = "Face detected! 😊"
                                 binding.instructionText.setBackgroundResource(R.drawable.text_background_success)
                             } else {
-                                binding.instructionText.text = "Arahkan wajah Anda ke dalam kotak"
+                                binding.instructionText.text = "Place your face into the box"
                                 binding.instructionText.setBackgroundResource(R.drawable.text_background)
                             }
                         }
@@ -190,7 +190,7 @@ class ScanFragment : Fragment() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startCamera()
             } else {
-                Toast.makeText(requireContext(), "Izin kamera diperlukan untuk aplikasi ini", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Camera permission is required for this app", Toast.LENGTH_SHORT).show()
             }
         }
     }
