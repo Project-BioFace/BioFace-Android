@@ -15,6 +15,7 @@
             android:id="@+id/historyImageView"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:layout_margin="16dp"
             android:scaleType="fitCenter" />
 
         <TextView
@@ -40,6 +41,14 @@
             android:textSize="16sp"
             android:layout_margin="16dp"
             android:fontFamily="@font/poppinsregular"/>
+
+        <TextView
+            android:id="@+id/causesTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_margin="16dp"
+            android:fontFamily="@font/poppinsregular" />
 
         <TextView
             android:id="@+id/recommendationTitleTextView"

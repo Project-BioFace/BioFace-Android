@@ -94,6 +94,12 @@ class DetailHistoryFragment : Fragment() {
         binding.diseaseTextView.text = "Face Condition:\n${prediction.faceDisease}"
         binding.accuracyTextView.text = "Accuracy:\n${prediction.diseaseAccuracy}"
         binding.descriptionTextView.text = "Description:\n${prediction.diseaseDescription}"
+        val causes = prediction.predictionDetail?.causes
+        binding.causesTextView.text = if (causes.isNullOrEmpty()) {
+            "No Causes"
+        } else {
+            "Causes:\n${causes.joinToString(", ")}"
+        }
         // Log URL gambar untuk debugging
         Log.d("DetailHistoryFragment", "Image URL: ${prediction.imageUrl}")
 

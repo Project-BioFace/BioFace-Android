@@ -93,7 +93,7 @@ class ResultFragment : Fragment() {
             "No accuracy details"
         } else {
             val accuracyList = detailAccuracy.map { "${it.key}: ${it.value}" }
-            "Causes Detail:\n${accuracyList.joinToString(", ")}"
+            "Prediction Detail:\n${accuracyList.joinToString(", ")}"
         }
     }
 

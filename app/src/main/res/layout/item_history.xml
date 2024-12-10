@@ -24,7 +24,9 @@
             android:contentDescription="@string/history_icon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="16dp" />
+            android:layout_marginStart="16dp"
+            android:scaleType="centerCrop"
+            />
 
         <!-- Face Disease Text -->
         <TextView
