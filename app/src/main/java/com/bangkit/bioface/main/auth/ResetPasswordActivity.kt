@@ -94,7 +94,7 @@ class ResetPasswordActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val toast = Toast.makeText(
                         this,
-                        "Email reset password telah dikirim. Periksa kotak masuk Anda.",
+                        "The password reset email has been sent. Please check your inbox.",
                         Toast.LENGTH_LONG
                     )
 
