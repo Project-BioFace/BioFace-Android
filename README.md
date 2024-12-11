@@ -31,4 +31,4 @@
   
 
 ## Demo of our application
-![Description of GIF](https://drive.google.com/uc?export=download&id=1iXT89yeTp6in3a_Z3qXP2zj14skEO_wb)
+
