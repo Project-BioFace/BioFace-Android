@@ -30,8 +30,8 @@
    - The application will now be running on your device or emulator.
   
 
-## Demo of our application
-![Description of GIF](https://drive.google.com/uc?export=download&id=1iXT89yeTp6in3a_Z3qXP2zj14skEO_wb)
+## Overview of our app
+https://github.com/user-attachments/assets/7c571b7d-421f-46fa-ba39-ff3fc1c8c7cd
 
 
 
