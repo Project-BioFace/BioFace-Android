@@ -31,4 +31,6 @@
   
 
 ## Demo of our application
+![GIF](https://i.imgur.com/FL4pkRT.gif)
+
 
